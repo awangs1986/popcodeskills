@@ -2,7 +2,11 @@
 
 `wait-what` is what you type when a message didn't land. The [agent](https://www.aihero.dev/ai-coding-dictionary/agent) then re-pitches what it just said. It adds the context you were missing, writes in plain words in your own language, and uses the vocabulary from your project's `CONTEXT.md`.
 
-The skill is three lines long. That is the design, not an unfinished draft. Skills that fight verbosity fail by growing: a four-hundred-line concision skill still leaves the [model](https://www.aihero.dev/ai-coding-dictionary/model) verbose, because the model reads the volume, not the plea. This one carries a single precise leading word and nothing else.
+The core rephrasing instruction is three lines long, alongside the portable conversation-style block. The short core is the design, not an unfinished draft. Skills that fight verbosity fail by growing: a four-hundred-line concision skill still leaves the [model](https://www.aihero.dev/ai-coding-dictionary/model) verbose, because the model reads the volume, not the plea. The rephrasing itself is anchored by a single precise leading word.
+
+<!-- cat-skills:conversation-doc:start -->
+Conversation follows the [shared style](../../.agents/conversation-style.md): warm, gentle, and natural, with `喵！` at prose paragraph boundaries. Commands and technical artifacts stay exact.
+<!-- cat-skills:conversation-doc:end -->
 
 ## When to reach for it
 

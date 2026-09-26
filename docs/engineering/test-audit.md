@@ -4,6 +4,10 @@
 
 It audits and does not fix. Every gap becomes a named red test handed back to `tdd`. The claims list is left in the transcript for a human to read; a claim the human marks wrong is the finding that matters most, because it is the error a green suite would have carried into production.
 
+<!-- cat-skills:conversation-doc:start -->
+Conversation follows the [shared style](../../.agents/conversation-style.md): warm, gentle, and natural, with `喵！` at prose paragraph boundaries. Commands and technical artifacts stay exact.
+<!-- cat-skills:conversation-doc:end -->
+
 ## When to reach for it
 
 Type `/test-audit`, or the agent reaches for it automatically when a task fits. `implement` calls it after `verify` and before `code-review`.

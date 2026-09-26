@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./docs/engineering/poster/cats/cat_teacher.png" alt="戴眼镜、拿教鞭的猫，猫咪 Skills 的老师" width="220">
+  <img src="./docs/engineering/poster/cats/cat_teacher.png" alt="戴圆眼镜、拿教鞭的橘白猫，猫咪 Skills 的老师" width="220">
 </p>
 
 <h1 align="center">猫咪 Skills</h1>
@@ -30,6 +30,7 @@
 vibe coding 翻车一般就两种：agent 压根没听懂，做出来个别的；代码库在你发现之前已经烂成一锅粥。Matt 的 skill 两种都能治，问题是一共二十五个，你得自己知道这会儿该敲哪个。猫咪 Skills 补的就是一个人单干时最缺的几块：
 
 - **`/vibe`**：一条命令解决"我现在该干啥"。它看一眼你的仓库，告诉你走哪条道，下一步敲哪条命令。你不用背整张地图。
+- **`/tell-a-story`**：讲一个真人怎样使用产品的故事，或者听 agent 照着当前工作区讲。一起改到体验对上，再整理成产品 SPEC 或待办 BACKLOG。不用先学会写专业需求。
 - **一条闭环**：需求 → spec → tickets → 测试 → 跑起来的证据 → 审查 → 提交。agent 自己一步步往下走，你只管看结果。
 - **会话兜底**：`refocus`、`handoff`、`takeover`。聊偏了、要换地方、会话直接没了，都有招。
 - **`/askcat`**：一只猫在一个 HTML 页面上，把你装的每个 skill 用大白话讲一遍，说的是你的话。
@@ -38,10 +39,11 @@ vibe coding 翻车一般就两种：agent 压根没听懂，做出来个别的�
 
 ## 猫咪 Skills 做什么
 
-一个人写代码，那些反复出现的累活有八件，每件配一个 skill。
+一个人写代码，那些反复出现的累活有九件，每件配一个 skill。
 
 | 事情 | 以前哪里出错 | 你敲什么 | agent 做什么 |
 | --- | --- | --- | --- |
+| **把产品想明白** | 知道想要什么体验，却不会写需求；agent 只好猜产品该长什么样 | `/tell-a-story` | 你讲用户故事，或者 agent 照着代码讲；一起修改、确认，再选产品 SPEC、待办 BACKLOG、两者都要，或者只保留故事 |
 | **把需求聊清楚** | 你讲一遍，agent 点头说懂了，做出来是另一个东西 | `/grill-with-docs` | 一轮一轮追问，问到每个岔路都有了答案；约定的词记进 `CONTEXT.md`，不好改的决定写成 ADR |
 | **拆成小块** | 一个巨型 prompt 带出一个巨型 diff，根本没法审 | `/to-spec` 然后 `/to-tickets` | 先把聊过的内容整理成 spec，一个新问题都不问；再切成一串 tracer-bullet tickets，每张写清楚卡在哪张后面 |
 | **写下来再动手** | spec 只活在聊天记录里，窗口一关就没 | `/implement` | 领一张 ticket，用 `tdd` 先红后绿，一次只做一小片；提交之前把下面的检查全跑完 |
@@ -51,7 +53,7 @@ vibe coding 翻车一般就两种：agent 压根没听懂，做出来个别的�
 | **看代码质量** | 永远失败不了的测试、没鉴权的路由、打进包里的密钥 | 自动跑：`test-audit`、`code-review`、`security-review` | 每个测试翻译成一句你看得懂的业务话，再故意改坏代码，看测试能不能发现；从规范和 spec 两个角度并排审 diff；专查个人项目上线时最常见的五种安全漏洞 |
 | **看架构** | 改一处要碰七个文件，你都习惯了 | `/improve-codebase-architecture` | 把代码库扫一遍，找出浅模块，给你一份 HTML 报告；你挑一个，它追着你问到底，这个就是你下一件要做的事 |
 
-后来发现还有两件一样重要的事：
+除了这九件，后来发现还有两件一样重要的事：
 
 | 事情 | 你敲什么 | agent 做什么 |
 | --- | --- | --- |
@@ -64,15 +66,17 @@ vibe coding 翻车一般就两种：agent 压根没听懂，做出来个别的�
 
 <p align="center">
   <a href="./docs/engineering/vibe-workflow-poster.zh-CN.png">
-    <img src="./docs/engineering/vibe-workflow-poster.zh-CN.png" alt="Vibe Coding 工作流海报中文版：初始化、Build、Fix、Review、Tidy 四条车道、implement 链、三个会话动作、上下文规则和停止规则" width="900">
+    <img src="./docs/engineering/vibe-workflow-poster.zh-CN.png" alt="Vibe Coding 工作流海报中文版：七只不同花色的猫带你走过 Tell a Story 产品对齐、初始化、四条车道、implement 闭环和会话兜底" width="900">
   </a>
 </p>
 
 <p align="center"><sub>点开看大图。海报是 <a href="./docs/engineering/poster/build_poster_zh.py"><code>docs/engineering/poster/build_poster_zh.py</code></a> 照着手册画出来的，跟手册永远一致。</sub></p>
 
-**第 0 步，每个仓库做一次。** `/setup-matt-pocock-skills` 定两件事：issue 存哪(个人项目用本地 Markdown，想用 issue 和 PR 就用 GitHub)，词汇表存哪。`/setup-feedback-loops` 把 typecheck、lint、测试、冒烟测试、日志和浏览器串成一条命令，每条都亲手弄红一次给你看。后面的 skill 全指着这些回路干活；没有它们，agent 就是在蒙。
+**第 0 步，每个仓库做一次。** `/setup-matt-pocock-skills` 定两件事：issue 存哪(个人项目用本地 Markdown，想用 issue 和 PR 就用 GitHub)，词汇表存哪。`/setup-feedback-loops` 把 typecheck、lint、测试、冒烟测试、日志和浏览器串成一条命令，每条都亲手弄红一次给你看。开发和验证环节全指着这些回路干活；没有它们，agent 就是在蒙。
 
-**车道 1，Build：我有个想法。** 你九成时间都在这儿。先掂掂分量：
+**车道 1，Build：我有个想法。** 如果还说不清产品用起来该是什么体验，先 `/tell-a-story`，没初始化也能用。选 1 由你讲故事，选 2 听 agent 照着工作区讲；先对齐体验，再规划开发。可选的 SPEC 和 BACKLOG 是本地产品草稿，不是已经发布的 issue。
+
+产品画面对齐了，再掂掂开发的分量：
 
 - **S**，一句话说得清：直接说，再加一句"先写测试"。agent 自己会用 `tdd`。
 - **M**，一次能干完，但还有些问题没想明白：`/grill-with-docs` → `/implement`，别换窗口。
@@ -146,27 +150,35 @@ npx skills@latest add awangs1986/popcodeskills
 ```
 /vibe                       → 上次做到哪，现在走哪条道
 /vibe add CSV export        → 一张路线卡：车道、下一条命令、然后干啥
+/tell-a-story               → 你讲或听用户故事，把产品体验对齐
 /askcat                     → 一只猫把装好的 skill 全讲一遍
 ```
 
-要记的就这三行。别的命令，`/vibe` 会在该用的时候告诉你。
+要记的就这几行。别的命令，`/vibe` 会在该用的时候告诉你。
 
 ## 认识这些猫
 
-海报上每只猫管闭环里的一摊。`/askcat` 把它们请到一个网页上，自己讲自己的 skill。
+七只猫，七种花色，各管闭环里的一摊。新增的三花猫负责 `/tell-a-story`，先把产品体验讲明白。点击猫咪可以看大图；`/askcat` 则把整套 skill 讲成一个网页导览。
 
-<table>
+<table width="100%">
   <tr>
-    <td align="center" width="16%"><img src="./docs/engineering/poster/cats/cat_teacher.png" width="110" alt="老师猫"><br><strong>老师</strong><br><sub><code>/vibe</code>、<code>/askcat</code></sub></td>
-    <td align="center" width="16%"><img src="./docs/engineering/poster/cats/cat_clipboard.png" width="80" alt="拿板夹的猫"><br><strong>检查员</strong><br><sub><code>verify</code>、<code>test-audit</code></sub></td>
-    <td align="center" width="16%"><img src="./docs/engineering/poster/cats/cat_detective.png" width="80" alt="侦探猫"><br><strong>侦探</strong><br><sub><code>diagnosing-bugs</code></sub></td>
-    <td align="center" width="16%"><img src="./docs/engineering/poster/cats/cat_shield.png" width="110" alt="拿盾牌的骑士猫"><br><strong>卫士</strong><br><sub><code>code-review</code>、<code>security-review</code></sub></td>
-    <td align="center" width="16%"><img src="./docs/engineering/poster/cats/cat_broom.png" width="110" alt="拿扫帚的猫"><br><strong>清扫工</strong><br><sub><code>improve-codebase-architecture</code></sub></td>
-    <td align="center" width="16%"><img src="./docs/engineering/poster/cats/cat_dizzy.png" width="110" alt="晕头转向的猫"><br><strong>找不着北的那只</strong><br><sub><code>refocus</code>、<code>handoff</code>、<code>takeover</code></sub></td>
+    <td align="center" width="25%"><a href="./docs/engineering/poster/cats/cat_teacher.png"><img src="./docs/engineering/poster/cats/cat_teacher.png" width="120" alt="戴圆眼镜、拿教鞭的橘白老师猫"></a><br><strong>老师</strong><br><sub>橘白</sub><br><sub><code>/vibe</code><br><code>/askcat</code></sub></td>
+    <td align="center" width="25%"><a href="./docs/engineering/poster/cats/cat_storyteller.png"><img src="./docs/engineering/poster/cats/cat_storyteller.png" width="120" alt="捧着紫色故事书的三花猫"></a><br><strong>讲故事的</strong><br><sub>三花</sub><br><sub><code>/tell-a-story</code></sub></td>
+    <td align="center" width="25%"><a href="./docs/engineering/poster/cats/cat_clipboard.png"><img src="./docs/engineering/poster/cats/cat_clipboard.png" width="120" alt="拿着薄荷绿板夹的黑白奶牛猫"></a><br><strong>检查员</strong><br><sub>黑白奶牛</sub><br><sub><code>verify</code><br><code>test-audit</code></sub></td>
+    <td align="center" width="25%"><a href="./docs/engineering/poster/cats/cat_detective.png"><img src="./docs/engineering/poster/cats/cat_detective.png" width="120" alt="拿放大镜的银灰虎斑侦探猫"></a><br><strong>侦探</strong><br><sub>银灰虎斑</sub><br><sub><code>diagnosing-bugs</code></sub></td>
+  </tr>
+</table>
+
+<table width="100%">
+  <tr>
+    <td align="center" width="33%"><a href="./docs/engineering/poster/cats/cat_shield.png"><img src="./docs/engineering/poster/cats/cat_shield.png" width="120" alt="举着青绿色盾牌的棕虎斑卫士猫"></a><br><strong>卫士</strong><br><sub>棕虎斑</sub><br><sub><code>code-review</code><br><code>security-review</code></sub></td>
+    <td align="center" width="33%"><a href="./docs/engineering/poster/cats/cat_broom.png"><img src="./docs/engineering/poster/cats/cat_broom.png" width="120" alt="戴淡紫头巾、拿扫帚的暹罗猫"></a><br><strong>清扫工</strong><br><sub>暹罗</sub><br><sub><code>improve-codebase-architecture</code></sub></td>
+    <td align="center" width="33%"><a href="./docs/engineering/poster/cats/cat_dizzy.png"><img src="./docs/engineering/poster/cats/cat_dizzy.png" width="120" alt="头顶绕着小星星的蓝灰杏色玳瑁猫"></a><br><strong>找不着北的</strong><br><sub>浅色玳瑁</sub><br><sub><code>refocus</code><br><code>handoff</code><br><code>takeover</code></sub></td>
   </tr>
 </table>
 
 - **老师**认路。不想动脑子就敲 `/vibe`；想一页看懂整套东西就敲 `/askcat`。
+- **讲故事的三花猫**先问谁来讲。你可以描述想要的使用体验，也可以听 agent 照着代码讲；多轮修改、确认后，再选 SPEC、BACKLOG，或者只留下故事。
 - **检查员**不信绿色。`verify` 把应用跑起来，一条条过验收，每条结论一张截图；`test-audit` 把测试翻译成业务话，再故意改坏代码，看测试是真报警还是装睡。
 - **侦探**不瞎猜。`diagnosing-bugs` 拿不到变红的命令就不开口，拿到了才按六步往下走。
 - **卫士**把 diff 看两遍，一遍看规范，一遍看 spec；改动碰到网上够得着的地方，就把安全清单带上。
@@ -175,11 +187,12 @@ npx skills@latest add awangs1986/popcodeskills
 
 ## 这个分支新增了什么
 
-上游二十五个 skill，这里三十四个。下面这些上游都没有，每个都有完整的 `SKILL.md`、文档页和 changeset。
+上游二十五个 skill，这里三十五个。下面这些上游都没有，每个都有完整的 `SKILL.md`、文档页和 changeset。
 
 | Skill | 为什么原来缺它 |
 | --- | --- |
 | [`vibe`](./skills/engineering/vibe/SKILL.md) | 上游有个 `ask-matt`，二十五个 skill 全覆盖的路由器。一个人用不了那么多，这里换成一张小地图：每个岔路都有默认走法，再加一张 First run 卡片，和一段"隔两周回来，上次做到哪" |
+| [`tell-a-story`](./skills/engineering/tell-a-story/SKILL.md) | 不会写专业需求，也能讲一个人怎么使用产品的故事。双向讲故事先对齐体验，再把确认过的场景转成产品 SPEC 或待办 BACKLOG，不急着选技术栈 |
 | [`setup-feedback-loops`](./skills/engineering/setup-feedback-loops/SKILL.md) | `tdd` 要跑测试，`verify` 要起应用，`diagnosing-bugs` 要读日志。原来没人管这些东西接没接好，更没人证明它们真会报警 |
 | [`verify`](./skills/engineering/verify/SKILL.md) | 测试全绿，应用不一定能用。总得有人把它跑起来，拿着证据一条条对验收标准 |
 | [`test-audit`](./skills/engineering/test-audit/SKILL.md) | agent 写的测试，写出来就是过的。翻译成业务话、再拿变异体去捅一捅，是不懂测试的人唯一能做的检查 |
@@ -192,15 +205,17 @@ npx skills@latest add awangs1986/popcodeskills
 另外还有几处整个仓库通用的改动：
 
 - **`implement` 是一条闭环链。** 领 ticket → `tdd` → `verify` → `test-audit` → `code-review`(加 `security-review`)→ 提交 → 关 ticket → 一份 Checks run 台账。每个 FAIL、每个活下来的变异体都打回 `tdd`。
+- **所有 Skill 都用温柔、自然的口吻。** 像一位耐心、细心的女秘书，少些机械感；对话的每段末尾带一个“喵！”。代码、命令、引用、表格和正式产物保持原样，验收和确认也不会放松。规则随每个 Skill 独立安装，并写入初始化配置；[统一语气规范](./.agents/conversation-style.md) 和自动校验负责防止漏掉。
+- **路由和导览会检查是否漏项。** `/vibe` 逐项覆盖正式 Skill，不把讲故事、导览或会话恢复拦在初始化之前；`/askcat` 按实际文件去重，核对卡片和选择器，不再依赖旧数量或固定清单。
 - **每个 skill 都不挑 agent(宿主中立)。** 到处都没有 Claude 专属的工具名。skill 里写的都是 *Invoke the "X" skill*：Claude Code 里是 Skill 工具，Codex 里是 skill 引用，Pi 这些里就是"去读那个 SKILL.md"(见 [`.agents/invocation.md`](./.agents/invocation.md))。
 - **skill 用英文写，agent 用你的话回。** 没有 skill 写死输出语言。`setup-matt-pocock-skills` 会往你的 `CLAUDE.md` / `AGENTS.md` 里加一条语言规矩：用户说啥话就回啥话，名字、命令、路径不动。
 - **手册和海报。** [`WORKFLOW.md`](./skills/engineering/vibe/WORKFLOW.md) 是完整版：整套 skill、四条车道、上下文规矩、这套流程里的 git、项目长大了咋办，外加两个从头到尾的例子。上面的海报是同一份东西的一页纸版。
 
 ## 致谢与许可
 
-上游是 [Matt Pocock](https://www.aihero.dev) 的 [mattpocock/skills](https://github.com/mattpocock/skills)，从 v1.2.3 fork 出来。这里三十四个 skill 里有二十五个是他的，用法原意都没动，只在单人流程和不挑 agent 这两处需要的地方改了改；仓库的规矩(`CLAUDE.md`、文档页、changeset 流程)也是他的。猫、`/vibe` 工作流、手册、海报，还有*这个分支新增了什么*里那九个 skill，是这个仓库自己加的。
+上游是 [Matt Pocock](https://www.aihero.dev) 的 [mattpocock/skills](https://github.com/mattpocock/skills)，从 v1.2.3 fork 出来。这里三十五个 skill 里有二十五个是他的，用法原意都没动，只在单人流程和不挑 agent 这两处需要的地方改了改；仓库的规矩(`CLAUDE.md`、文档页、changeset 流程)也是他的。猫、`/vibe` 工作流、手册、海报，还有*这个分支新增了什么*里那十个 skill，是这个仓库自己加的。
 
-MIT 许可，跟上游一样。原来的版权声明还在 [`LICENSE`](./LICENSE) 里。
+MIT 许可，跟上游一样。原来的版权声明还在 [`LICENSE`](./LICENSE) 里。 Askcat 内嵌的两字形语气词字体来自 Noto Sans SC，保留 [SIL OFL 1.1 许可](./skills/productivity/askcat/assets/OFL.txt)，生成的 HTML 里也附有该许可。
 
 ## 参考：全部 skill
 
@@ -216,6 +231,7 @@ skill 本身英文写的，下面是中文说明，名字命令跟英文版一�
 
 - **[ask-matt](./skills/engineering/ask-matt/SKILL.md)**：拿不准用哪个 skill、走哪条流程，就问它。管着仓库里所有能敲的 skill 的路由器。
 - **[vibe](./skills/engineering/vibe/SKILL.md)**：一个人的调度：看你走四条道里的哪条(build、fix、review、tidy)，活有多大，下一条敲啥。整张地图里专给一个人挑出来的那部分。
+- **[tell-a-story](./skills/engineering/tell-a-story/SKILL.md)**：你讲想要的使用体验，或 agent 照着代码讲当前体验；多轮修改、确认后，转成产品 SPEC 或待办 BACKLOG。不写代码，不自动发布 issue。
 - **[refocus](./skills/engineering/refocus/SKILL.md)**：长会话跑偏了，把它拉回来：spec、ticket、每个决定对照原始材料重读一遍，看做出来的东西对不对得上，偏了就报出来，材料里没写清的问一轮再接着干。
 - **[grill-with-docs](./skills/engineering/grill-with-docs/SKILL.md)**：边访谈边建领域模型：术语当场磨，`CONTEXT.md` 和 ADR 当场记。
 - **[triage](./skills/engineering/triage/SKILL.md)**：issue 按分诊角色的状态机往下走。
@@ -250,7 +266,7 @@ skill 本身英文写的，下面是中文说明，名字命令跟英文版一�
 **用户调用**
 
 - **[askcat](./skills/productivity/askcat/SKILL.md)**：生成一个 HTML 页面，一只卡通猫把装好的 skill 挨个讲明白：干啥的、啥时候敲、跑顺了长啥样，再加个"我该用哪个"小测试和一张第一次跑的清单。说你的话。
-- **[grill-me](./skills/productivity/grill-me/SKILL.md)**：揪着你的计划往死里问，问到设计树上每个岔路都有答案。
+- **[grill-me](./skills/productivity/grill-me/SKILL.md)**：耐心地聊透你的计划，逐轮厘清设计树上的每个岔路。
 - **[handoff](./skills/productivity/handoff/SKILL.md)**：把当前会话压成一份交接文档，换个 agent 照样接着干。
 - **[takeover](./skills/productivity/takeover/SKILL.md)**：会话太长、卡住、没了都行，新会话拿着 ID、导出、URL 或 handoff 文件接上：先看记录，再整出精简上下文，用十句话以内把项目说明白，对完再动手。旧会话那边啥都不用干。
 - **[teach](./skills/productivity/teach/SKILL.md)**：连着几个会话教你点新东西，拿当前目录记进度。
@@ -259,5 +275,5 @@ skill 本身英文写的，下面是中文说明，名字命令跟英文版一�
 
 **模型调用**
 
-- **[grilling](./skills/productivity/grilling/SKILL.md)**：往死里问的那套问法本尊：计划、决定、想法都问，问到设计树上每个岔路都有答案。`grill-me`、`grill-with-docs`、`triage`、`wayfinder` 和 `improve-codebase-architecture` 用的都是它。
+- **[grilling](./skills/productivity/grilling/SKILL.md)**：耐心、细致的访谈方法：逐轮厘清计划、决定和想法，直到设计树上的每个岔路都有答案。`grill-me`、`grill-with-docs`、`triage`、`wayfinder` 和 `improve-codebase-architecture` 用的都是它。
 - **[writing-for-agents](./skills/productivity/writing-for-agents/SKILL.md)**：教 agent 写它看的东西：skill、AGENTS.md/CLAUDE.md，还有所有 agent 会顺着链接摸过来的文档。

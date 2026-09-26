@@ -14,8 +14,9 @@
 from PIL import Image, ImageDraw, ImageFont
 import re, math, os
 from pathlib import Path
+from functools import lru_cache
 
-W, H = 2000, 3900
+W, H = 2000, 3920
 BG = (255, 248, 236)
 INK = (47, 42, 38)
 GRAY = (120, 112, 104)
@@ -23,12 +24,15 @@ GRAY = (120, 112, 104)
 HERE = Path(__file__).resolve().parent
 FONTS = Path(os.environ.get("POSTER_FONTS", HERE / "fonts"))
 MONO_PATH = os.environ.get("POSTER_MONO", "/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf")
+@lru_cache(maxsize=None)
 def F(size, bold=True):
     return ImageFont.truetype(str(FONTS / ("NotoSansSC-700-full.ttf" if bold else "NotoSansSC-400-full.ttf")), size)
+@lru_cache(maxsize=None)
 def MONO(size):
     return ImageFont.truetype(MONO_PATH, size)
 
 LANES = {
+    "story":  dict(fill=(255, 237, 231), edge=(198, 96, 113), dark=(144, 54, 76)),
     "setup":  dict(fill=(238, 236, 231), edge=(120, 112, 104), dark=(90, 84, 78)),
     "build":  dict(fill=(222, 235, 255), edge=(59, 111, 214), dark=(35, 75, 160)),
     "fix":    dict(fill=(255, 226, 220), edge=(217, 83, 79),  dark=(160, 50, 46)),
@@ -42,8 +46,16 @@ d = ImageDraw.Draw(img)
 
 # ---------- text helpers ----------
 def tokens(s):
-    # NOTE: newline first so an explicit break always tokenizes on its own.
-    return re.findall(r"[A-Za-z0-9_/\\-\\.:,'\\(\\)\\+→←=<>#\\*]+|\n|\s+|.", s)
+    # Keep commands intact and closing punctuation with the preceding word/glyph.
+    raw = re.findall(r"[A-Za-z0-9_/.:,'()+→←=<>#*-]+|\n|[ \t]+|.", s)
+    closing = "\u3001\u3002\uff0c\uff01\uff1f\uff1b\uff1a\uff09\u3011\u300b\u3009\u201d\u2019?!;:.)]}"
+    grouped = []
+    for token in raw:
+        if token in closing and grouped and not grouped[-1].isspace():
+            grouped[-1] += token
+        else:
+            grouped.append(token)
+    return grouped
 
 def wrap(s, font, maxw):
     lines, cur = [], ""
@@ -143,21 +155,15 @@ def edge_label(x, y, s, color=GRAY, size=26):
 
 # ---------- cats ----------
 def load_cat(path, height):
-    im = Image.open(path).convert("RGBA")
-    # flood-fill background from corners to magenta, then key out
-    from PIL import ImageDraw as ID
-    key = (255, 0, 255, 255)
-    for xy in [(2, 2), (im.width - 3, 2), (2, im.height - 3), (im.width - 3, im.height - 3)]:
-        ID.floodfill(im, xy, key, thresh=45)
-    px = im.load()
-    for y in range(im.height):
-        for x in range(im.width):
-            r, g, b, a = px[x, y]
-            if r > 230 and g < 40 and b > 230:
-                px[x, y] = (0, 0, 0, 0)
-    bbox = im.getbbox(); im = im.crop(bbox)
-    s = height / im.height
-    return im.resize((int(im.width * s), height), Image.LANCZOS)
+    # Assets are transparent cutouts; preserve white fur and fine coat markings.
+    with Image.open(path) as source:
+        im = source.convert("RGBA")
+    bbox = im.getbbox()
+    if bbox is None:
+        raise ValueError(f"Empty mascot: {path}")
+    im = im.crop(bbox)
+    scale = height / im.height
+    return im.resize((round(im.width * scale), height), Image.Resampling.LANCZOS)
 
 def paste_cat(cat, x, y):
     img.paste(cat, (int(x), int(y)), cat)
@@ -183,21 +189,22 @@ def bubble(x0, y0, x1, y1, s, tail, size=28, fill=(255, 255, 255), edge=INK):
     for l in lines:
         d.text((x0 + 25, y), l, font=f, fill=INK); y += lh
 
-cat_teacher = load_cat((HERE / "cats" / "cat_teacher.png"), 330)
+cat_teacher = load_cat((HERE / "cats" / "cat_teacher.png"), 250)
 cat_det = load_cat((HERE / "cats" / "cat_detective.png"), 165)
 cat_clip = load_cat((HERE / "cats" / "cat_clipboard.png"), 240)
-cat_broom = load_cat((HERE / "cats" / "cat_broom.png"), 155)
+cat_broom = load_cat((HERE / "cats" / "cat_broom.png"), 170)
 cat_dizzy = load_cat((HERE / "cats" / "cat_dizzy.png"), 190)
-cat_shield = load_cat((HERE / "cats" / "cat_shield.png"), 155)
+cat_shield = load_cat((HERE / "cats" / "cat_shield.png"), 175)
+cat_storyteller = load_cat((HERE / "cats" / "cat_storyteller.png"), 285)
 
 # =================== HEADER ===================
-d.text((80, 60), "Vibe Coding 工作流", font=F(72), fill=INK)
-d.text((84, 160), "一个人 + 一个 agent，一条闭环，有只猫带路", font=F(30, False), fill=GRAY)
+d.text((80, 60), "Vibe Coding 工作流", font=F(66), fill=INK)
+d.text((84, 160), "一个人 + 一个 agent，一条闭环，一群猫咪带路", font=F(30, False), fill=GRAY)
 paste_cat(cat_teacher, 1640, 10)
-bubble(1100, 40, 1600, 215, "不知道从哪开始？在项目里敲 /vibe，我帮你找对车道，告诉你下一条命令。", (1650, 150), size=27)
+bubble(1100, 40, 1600, 215, "不知道下一步敲什么？\n先来 /vibe。\n我带你找到下一步。", (1650, 150), size=27)
 
 # =================== SETUP BAND ===================
-panel(80, 330, 1920, 650, "setup", "第 0 步 · 地基", "每个仓库做一次，后面所有 skill 都靠它们")
+panel(80, 330, 1920, 650, "setup", "第 0 步 · 地基", "每个仓库做一次，发布 issue 或动手开发之前先配好")
 node(430, 510, 560, 150, "setup", cmd="/setup-matt-pocock-skills", cmd_size=30, label="issue 存哪，词汇表放哪", note="个人项目：选本地 Markdown")
 arrow([(715, 510), (785, 510)])
 node(1105, 510, 620, 150, "setup", cmd="/setup-feedback-loops", cmd_size=30, label="typecheck · lint · 测试 · 冒烟\n日志 · 浏览器 · 一条命令全跑", note="每条检查都亲眼看它红一次")
@@ -302,8 +309,8 @@ text(SX[1], 2895, "离开的会话写个小文件放临时目录：换目录、�
 text(SX[2], 2895, "额度用完、崩溃、关掉，或者换了工具。新会话自己读记录（ID / 导出 / URL / handoff），十句话以内复述项目，问一次。你确认之前它是只读的。", F(23, False), fill=INK, maxw=440, align="center", spacing=1.4)
 
 # =================== BOTTOM: context rules + stuck ===================
-panel(80, 3200, 1010, 3630, "setup", "上下文规则（记住这七条就够了）")
-rules = [("访谈 → spec → tickets", "", "同一个窗口，别 clear"),
+panel(80, 3200, 1010, 3660, "setup", "上下文规则（记住这七条就够了）")
+rules = [("故事 / 访谈 → spec → tickets", "", "同一个窗口，别 clear"),
          ("ticket 之间", "/clear", "，开新窗口"),
          ("agent 跑偏了", "/refocus", "，compact 之前先跑它"),
          ("换目录 / 换工具 / 分叉", "/handoff", ""),
@@ -320,17 +327,51 @@ for a, cmd, rest in rules:
         d.text((x, y), rest, font=F(25, False), fill=LANES["build"]["dark"])
     y += 52
 
-panel(1050, 3200, 1920, 3630, "fix", "错了三次？停！")
+panel(1050, 3200, 1920, 3660, "fix", "错了三次？停！")
 text(1090, 3260, "别试第四第五次。扔掉它，/clear，然后写一句话：", F(26, False), fill=INK, maxw=790)
 rbox(1090, 3310, 1880, 3380, (255, 255, 255), LANES["fix"]["edge"], r=18, width=3)
 text(1485, 3328, "当我输入 ___，我期望 ___，但得到 ___", F(28), fill=LANES["fix"]["dark"], align="center")
 text(1090, 3405, "写不出来 → 不是 bug，是需求没对上 → /refocus 或 /grill-with-docs\n写得出来 → 先把它变成一个失败的测试：\n    一次修好就绿了 → 当时缺反馈回路（tdd）\n    一直红 / 修好这个坏了那个 → 真 bug（/diagnosing-bugs）\n    每次改动都碰五个文件 → 没接缝（④ Tidy）", F(24, False), fill=INK, spacing=1.5)
 
 # =================== FOOTER ===================
-d.line([(80, 3690), (1920, 3690)], fill=(210, 200, 185), width=3)
-text(80, 3715, "第一次来？空仓库里敲 /vibe：一张 First run 卡片带你九步走完整个闭环，每步都跟你确认。", F(27), fill=INK, maxw=1840)
-text(80, 3758, "完整手册：skills/engineering/vibe/WORKFLOW.md   ·   25 个精选 skill，14 个你来敲，11 个 agent 自己用   ·   github.com/awangs1986/popcodeskills", F(24, False), fill=GRAY, maxw=1840)
-text(80, 3798, "口诀：先对齐，再写 spec；先变红，再变绿；跑起来；看 Claims；合并前先 review；每周扫一次；跑偏了 refocus，没了 takeover。", F(26), fill=LANES["build"]["dark"], maxw=1840)
+d.line([(80, 3720), (1920, 3720)], fill=(210, 200, 185), width=3)
+text(80, 3745, "第一次来？空仓库里敲 /vibe：一张 First run 卡片带你九步走完整个闭环，每步都跟你确认。", F(27), fill=INK, maxw=1840)
+text(80, 3788, "完整手册：skills/engineering/vibe/WORKFLOW.md   ·   26 个精选 skill，15 个你来敲，11 个 agent 自己用   ·   github.com/awangs1986/popcodeskills", F(24, False), fill=GRAY, maxw=1840)
+text(80, 3828, "口诀：先对齐，再写 spec；先变红，再变绿；跑起来；看 Claims；合并前先 review；每周扫一次；跑偏了 refocus，没了 takeover。", F(26), fill=LANES["build"]["dark"], maxw=1840)
+
+# =================== PRODUCT STORY ON-RAMP ===================
+# Insert a band after the header, keeping the four-lane map's coordinates intact.
+# Header artwork ends above this cut; the setup title starts below it.
+FLOW_TOP, STORY_HEIGHT = 280, 520
+flow = img
+img = Image.new("RGB", (W, H + STORY_HEIGHT), BG)
+img.paste(flow.crop((0, 0, W, FLOW_TOP)), (0, 0))
+img.paste(flow.crop((0, FLOW_TOP, W, H)), (0, FLOW_TOP + STORY_HEIGHT))
+d = ImageDraw.Draw(img)
+
+panel(80, 330, 1920, 790, "story", "动手之前 · 先讲个故事", "先对齐产品体验。按需使用，不用先做初始化。")
+d.ellipse((100, 410, 405, 715), fill=LANES["story"]["fill"])
+paste_cat(cat_storyteller, 105, 425)
+text(252, 725, "讲故事的三花猫", F(23), fill=LANES["story"]["dark"], align="center")
+text(440, 418, "/tell-a-story", MONO(38), fill=LANES["story"]["dark"])
+text(820, 430, "选 1 或 2，一起把故事改到对上。", F(25, False), fill=GRAY)
+
+rbox(430, 495, 850, 655, LANES["story"]["fill"], LANES["story"]["edge"], r=22, width=3)
+d.ellipse((453, 516, 497, 560), fill=LANES["story"]["edge"])
+d.text((475, 538), "1", font=F(28), fill="white", anchor="mm")
+text(515, 514, "你来讲", F(30), fill=LANES["story"]["dark"])
+text(455, 568, "谁在用，要做成什么事，\n用起来该是什么体验。", F(24, False), maxw=370, spacing=1.3)
+
+rbox(885, 495, 1305, 655, LANES["story"]["fill"], LANES["story"]["edge"], r=22, width=3)
+d.ellipse((908, 516, 952, 560), fill=LANES["story"]["edge"])
+d.text((930, 538), "2", font=F(28), fill="white", anchor="mm")
+text(970, 514, "Agent 来讲", F(30), fill=LANES["story"]["dark"])
+text(910, 568, "照着当前代码讲个故事，\n你来听、纠正、补充。", F(24, False), maxw=370, spacing=1.3)
+
+arrow([(1325, 575), (1410, 575)], color=LANES["story"]["edge"], width=5, head=18)
+node(1650, 575, 440, 170, "story", cmd="SPEC / BACKLOG", label="两者都要 / 只保留故事", note="你确认后，才整理", cmd_size=29)
+text(440, 678, "先讲 → 再聊 → 多轮修改 → 确认故事", F(28), fill=LANES["story"]["dark"])
+text(440, 730, "分清已有、待确认、希望新增。只做产品草稿，不自动写代码或发布 issue。", F(24, False), fill=GRAY, maxw=1440, spacing=1.25)
 
 img.save(str(HERE.parent / "vibe-workflow-poster.zh-CN.png"), optimize=True)
 print("saved")

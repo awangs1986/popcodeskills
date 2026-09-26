@@ -1,0 +1,35 @@
+name: Checks
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  skills:
+    name: Skills and guide regressions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check skill packaging, conversation style, and route coverage
+        run: npm run check-skills
+
+      - name: Check plugin version
+        run: npm run check-plugin-version
+
+      - name: Test guide rendering and repository guardrails
+        run: npm test

@@ -6,6 +6,10 @@ Its default move is deletion, not explanation. Ask an agent to write instruction
 
 It was called `writing-great-skills` until v1.1. The rename tracks what it always was underneath: almost none of it is skill-specific. The skill-only mechanics (frontmatter, the model- versus user-invoked choice, router skills) are disclosed to a linked `SKILL-MECHANICS.md` you read only when the document in front of you is a skill.
 
+<!-- cat-skills:conversation-doc:start -->
+Conversation follows the [shared style](../../.agents/conversation-style.md): warm, gentle, and natural, with `喵！` at prose paragraph boundaries. Commands and technical artifacts stay exact.
+<!-- cat-skills:conversation-doc:end -->
+
 ## When to reach for it
 
 Type `/writing-for-agents`, or the agent reaches for it on its own when you're creating or editing a skill, or modifying `AGENTS.md` or `CLAUDE.md`.

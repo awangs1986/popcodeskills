@@ -4,6 +4,10 @@
 
 It observes and does not fix. A FAIL is handed back to whoever called it, usually `implement`, which turns it into the next red test. "The tests pass" is not treated as evidence that the feature works; only something the skill saw is.
 
+<!-- cat-skills:conversation-doc:start -->
+Conversation follows the [shared style](../../.agents/conversation-style.md): warm, gentle, and natural, with `喵！` at prose paragraph boundaries. Commands and technical artifacts stay exact.
+<!-- cat-skills:conversation-doc:end -->
+
 ## When to reach for it
 
 Type `/verify`, or the agent reaches for it automatically when a task fits. `implement` calls it after the suite goes green and before `code-review`; you can also say "does it actually work", "try it", or "show me" at any point.

@@ -1,56 +1,76 @@
 ---
 name: askcat
-description: "Build a single HTML page where a cartoon cat explains every skill installed from this repo in plain words: what each one does, when to type it, what you'll see, and which one you need right now. A guided tour of the kit, in the user's language."
+description: "Build one offline HTML guide to the skills actually available: gentle cat explanations, a current skill picker, examples, and a first-run checklist, all in the user's language."
 disable-model-invocation: true
 argument-hint: "Nothing, a language, an output path, or one skill name to start the tour on"
 ---
 
 # Askcat
 
-The user wants to understand the skills they have installed, and they want it explained the friendly way. Produce **one self-contained HTML file** in which a cat guide walks them through the whole kit: what each skill is for, when to reach for it, what a good run looks like, and a "which one do I need?" picker. This is `teach` narrowed to a single topic (this repo's skills) with a fixed guide character and a bundled page template, so the work is the writing, not the layout.
+Help the user get comfortable with the kit. Produce **one self-contained HTML file** with a warm cat guide, one card per discovered skill, a "which one do I need?" picker, and a first-run checklist. Explain the work patiently in ordinary words. The layout is bundled; understanding the installed skills and writing trustworthy guidance are the job.
 
-You explain; you don't run anything. Building the page is the whole job.
+This is a guide, not an execution flow. You may inspect files and run this skill's page builder, but do not invoke the skills being explained, install anything, or start project setup. The tour works before setup.
 
-## 1. Gather the kit (read, don't recall)
+## 1. Gather an inventory, then read
 
-Every sentence on the page must come from a `SKILL.md` you opened in this session. Never describe a skill from memory.
+1. **Discover actual files.** Inspect the current harness's project and user skill locations (`.claude/skills`, `.agents/skills`, `.pi/skills` or `.pi/agent/skills`, and their user-level equivalents), accessible plugin manifests and skill paths, and, when appropriate, this checkout's `skills/<bucket>/<name>/SKILL.md`. Absence from the model's implicit skill list is not evidence that a user-invoked command is missing.
+2. **Identify the scope.** Installed skills from this kit are the default. In a checkout with no verifiable installation, offer a **repository catalog**, labelled as such, not a claim that its commands are installed. Use `scope: installed` or `scope: repository` in both inventory and guide data. If neither source is readable, say what access or path is needed instead of fabricating the kit.
+3. **Deduplicate.** Resolve symlinks; the same skill linked into several harnesses gets one card. When copies with the same name differ, use the current harness's effective project/plugin/user precedence when known, record the chosen path, and mention a meaningful version conflict. If precedence cannot be established, ask which copy to describe. Do not silently merge different versions.
+4. **Respect the buckets.** Include the promoted set available in the chosen scope. Include `in-progress` only when actually installed, clearly marked beta. Skip `misc` and `deprecated` in this introductory guide; say they are outside the tour rather than silently promising "every file in the checkout". A plugin manifest describes that plugin, not every other separately installed skill.
+5. **Read each chosen `SKILL.md`.** Read the frontmatter and the behavior, output, prerequisites, and boundaries. Determine `invoke: you` from `disable-model-invocation: true` and the matching Codex policy; otherwise `invoke: agent`. Read its docs page when available. A claim not established by the source remains a stated uncertainty.
+6. **Record the inventory independently of the cards.** Follow [DATA-FORMAT.md](DATA-FORMAT.md): one entry per unique name, with invocation mode and beta flag, plus a private path ledger showing which files you read. Compute counts from that inventory; never reuse a remembered skill count.
+7. **Read the current map.** Read the installed `vibe` handbook and route coverage file when available, and `ask-matt` for the broader map. These are supporting material to inspect, not skills to invoke. The target `SKILL.md` wins if a summary is stale.
 
-1. **Find the skills.** Look in the harness skill directories (`~/.claude/skills`, `~/.agents/skills`, `~/.pi/agent/skills`, a project-level `.claude/skills`, `.agents/skills`, `.pi/skills`) and, when the current directory is a checkout of the skills repo, in `skills/*/`. Take the **promoted** set (the `engineering/` and `productivity/` buckets, or the plugin's skill list) plus anything from `in-progress/` that is actually installed, labelled as beta. Skip `misc/` and `deprecated/`.
-2. **Read each `SKILL.md`**: the frontmatter (`name`, `description`, whether `disable-model-invocation: true`, meaning the human types it) and enough of the body to say honestly what it produces and what it refuses to do. Where a skill has a docs page under `docs/<bucket>/<name>.md`, its *When to reach for it* and *It's working if* sections are the best source for the card.
-3. **Read the map.** `vibe/WORKFLOW.md` (if present) gives the lanes, sizes and the order skills run in; `ask-matt/SKILL.md` gives the full map. Use them to decide chapters and to write the picker. If neither exists, group by the bucket READMEs.
-4. **Note the user's language.** The page is written in the language the user is speaking to you in, unless the argument names another. Skill names, commands and file paths stay as they are.
+## 2. Write the guide
 
-## 2. Write the content
+Use [DATA-FORMAT.md](DATA-FORMAT.md). Write the guide in the user's language, unless they explicitly request another. Keep names, commands, identifiers, and paths unchanged.
 
-Fill the data object described in [DATA-FORMAT.md](DATA-FORMAT.md). One card per skill; the rules for a card:
+Each card has a simple explanation, a useful trigger, what the user will see, one realistic example prompt, one helpful cat tip, and observable working/broken tells. A person who has never written software should be able to choose their next step. Explain an unavoidable term once and add it to the glossary. Where the source says too little, say so rather than filling the gap with marketing.
 
-- **Plain words.** A first-week developer who has never used an agent should follow every card. Say "a test that fails on purpose first" rather than "red-green"; if a repo term is unavoidable (spec, ticket, seam, context window, primary source), gloss it inline the first time and add it to the glossary.
-- **Nothing invented.** The one-liner, the *when*, the *what you'll see*, and the *it's working if* line all come from the skill's own file. If a skill's file doesn't say what a good run looks like, say so on the card rather than guessing.
-- **One realistic example prompt** per skill, in the user's language, of the kind they would actually type. For user-invoked skills, start it with the command; for model-invoked skills, show the sentence that makes the agent reach for it, and say that it is automatic.
-- **The cat tip** is the one thing people get wrong with this skill, or the one habit that makes it pay off. From the docs page's *Common questions* when there is one. Not a joke; a friend's warning.
-- **Working / broken tells** in one line each, so the user can tell a good run from a bad one the first time.
-- **Length.** Each field one to three short sentences. The page is a tour, not the manual; the card links to the skill's own file for the rest.
+The tone is gentle and practical, like a considerate secretary helping someone find their way. Invite and recommend rather than command, flatter, or scold. The template adds the conversation marker at each guide paragraph boundary; write clean prose fields, and keep example prompts, UI labels, and source links free of decorative suffixes.
 
-Chapters follow the workflow, not the alphabet: *Start here* (the dispatcher and setup), then *Build*, *Fix*, *Review*, *Tidy*, *When the session goes wrong*, *Everything else*. Inside a chapter, order skills the way they run. Each chapter has a two-sentence blurb and a cat mood from the fixed set in DATA-FORMAT.md.
+Order chapters by use: **Start here**, optional **Picture the product**, **Build**, **Fix**, **Review**, **Tidy**, **When the session goes wrong**, **Everything else**. Omit empty chapters. `story` is an optional on-ramp, not a fifth engineering lane; use its calico `storyteller` mood. Card-level moods let `reader` guide verification and test audits within other chapters. All artwork is inline SVG with distinct coats; don't add external images or dependencies.
 
-The **picker** is a short decision tree (three or four questions deep at most) that lands on one skill and one example prompt. Derive it from the workflow's lanes and signals; every leaf must be a skill that is on the page.
+### Keep the new routes visible
 
-The **first run** list is the shortest sequence that exercises the whole loop once, with what to watch at each step; take it from `vibe/WORKFLOW.md` if present, otherwise write a five-step one from the cards.
+When present in the inventory, explain these boundaries in the picker instead of treating every "green but wrong" request the same:
 
-## 3. Build the page
+| User's need | Route |
+| --- | --- |
+| Describe an intended product experience, or hear one from the source | `tell-a-story`: 1 user tells, 2 agent tells; revise, confirm, then optional product SPEC / BACKLOG drafts |
+| Design cases that prove the agreed outcome | `cattytest` |
+| Run already-agreed cases and collect evidence | `verify` |
+| Understand what existing tests claim and whether they can detect faults | `test-audit` |
+| Research a library, API, or external fact | `research` |
+| Recover a dead session rather than refocus a live one | `takeover`, distinct from `refocus` and `handoff` |
 
-1. Read [template.html](template.html) from this skill's directory. Do not rewrite its layout or styles; the cat, the chapters, the search box, the picker and the progress ticks are already in it.
-2. Replace the single line `/*ASKCAT_DATA*/` with `window.ASKCAT = <your JSON>;`. Valid JSON, no trailing commas, strings escaped.
-3. Write the result to `askcat.html` in the current directory, or to the path the argument names. One file, no external assets, no network requests.
-4. Open it for the user if the host can run a command (`open`, `xdg-open`, `start`); otherwise give the path and say to double-click it.
-5. If the argument named a skill, append `#skill-<name>` to the path you give back so the page opens on that card, and answer in chat with that card's one-liner and example in two or three sentences.
+The picker is a shallow decision tree, at most four questions to a result. Every leaf must name a card in this inventory, respect its invocation mode, and supply a usable prompt. Never invent an uninstalled fallback. A partial install gets a smaller honest picker. The first-run sequence follows the current handbook, filtered to the available commands; describe missing prerequisites as missing, not as installed steps.
 
-Reply briefly: where the file is, how many skills are on it, and that ticks (the "I've tried this" boxes) are saved in the browser, so the page doubles as a checklist. Offer to regenerate after they install or update skills; the page has no memory of its own beyond those ticks.
+## 3. Validate and build
 
-## Rules
+1. Read [template.html](template.html). Keep its layout and renderer; supply content, not a replacement interface.
+2. Keep `inventory.json` and `guide.json` in a scratch location, not as extra runtime dependencies. With Node.js available, use the bundled builder from this skill's own installed directory:
 
-- Read before you write. A card for a skill whose file you didn't open in this session is a card you may not write.
-- Don't run, install, or configure anything. If the user asks "so which one should I run now", answer from the picker and stop; `vibe` exists for the routing.
-- Don't add skills that aren't installed, and don't hide ones that are. If you find a skill you can't explain from its file, put it on the page with its description and a note saying the file didn't say more.
-- The cat is a guide, not a mascot for its own sake. Every bubble carries information; if a bubble could be deleted without losing anything, delete it.
-- No em-dashes in the page copy.
+   ```bash
+   node <skill-dir>/scripts/build-page.mjs --data <scratch>/guide.json --inventory <scratch>/inventory.json --out <output>/askcat.html
+   ```
+
+   It checks inventory/card equality, invocation and beta flags, unique anchors, labels, source-link safety, important picker routes, unreachable questions and cycles, and the depth limit. It inserts JSON safely, including escaping `<` so a source string cannot terminate the script element. It refuses to overwrite an existing output; use `--force` only after the user approves that replacement.
+3. If Node.js is unavailable, perform the same checks yourself and replace only the **standalone** `/*ASKCAT_DATA*/` line with `window.ASKCAT = <serialized JSON>;`. Escape `<` as `\u003c` and the Unicode line/paragraph separators as `\u2028` / `\u2029`. Do not use raw interpolation or a blanket replacement of every marker mention. State which validation was manual rather than claiming the helper ran.
+4. Resolve each source link from the output file's location, not from the current working directory; URL-encode spaces. Use a real repository URL only when known. Confirm local targets exist. Ask before changing an existing output file, regardless of which build path you use.
+5. Open the result and check a search, a picker path, and a progress tick when a browser is available. Check `tell-a-story`'s card and picker result specifically when installed. The guide must open from disk with no runtime network requests. If browser checking is unavailable, say so.
+6. If an initial skill name was supplied, link to `#skill-<name>` only if it is in the inventory. Otherwise explain that it was not found and offer the full tour. Use the host's file viewer when available, otherwise give the path.
+
+## 4. Hand it back
+
+Briefly explain where the guide is, whether it covers installed skills or a repository catalog, and its deduplicated count. Mention that progress ticks stay in that browser when storage is available, and regenerating the guide refreshes its inventory. With storage blocked, ticks last only for the open page. Give a calm, concrete next step if the user asks for one; do not execute it on their behalf.
+
+A guide is complete only when its cards match the independently gathered inventory, its prompts remain copyable, its narration is warm, and every recommendation is grounded in a file you read. Report unverified behavior honestly.
+
+<!-- cat-skills:conversation:start -->
+## Conversation style
+
+- Use the warm, attentive manner of a gentle female secretary: natural wording, patient questions, and a considerate next step. Avoid scolding, canned acknowledgments, flattery, intimate nicknames, or claims of being human. Be honest about risks and failures.
+- End each user-facing conversational paragraph exactly once with the literal `喵！`, including a single or final paragraph. Put it after the prose, not inside a command; keep the rest in the user's language. Apply this to questions, progress updates, and final explanations.
+- Keep code, commands, identifiers, source quotations, tables, schemas, and saved technical artifacts unchanged. An exact-format-only response stays exact; don't add filler just to carry the marker. Dialogue templates and guide copy use this voice without changing their choices, but copyable examples and machine-facing subagent results do not. Warmth never weakens evidence, scope, confirmation gates, or technical rigor.
+<!-- cat-skills:conversation:end -->

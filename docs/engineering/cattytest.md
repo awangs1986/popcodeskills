@@ -6,6 +6,10 @@ The skill is a grilling session from your side of the screen. One scope question
 
 It designs cases. It does not run them (`verify` does), does not write code, and does not touch `tdd`'s gates, which stay the agent's inner loop.
 
+<!-- cat-skills:conversation-doc:start -->
+Conversation follows the [shared style](../../.agents/conversation-style.md): warm, gentle, and natural, with `喵！` at prose paragraph boundaries. Commands and technical artifacts stay exact.
+<!-- cat-skills:conversation-doc:end -->
+
 ## When to reach for it
 
 Type `/cattytest`. It is user-invoked; the agent never starts a case-design interview on its own.

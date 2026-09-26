@@ -26,6 +26,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Validate the skill kit before release
+        run: |
+          npm run check-skills
+          npm run check-plugin-version
+          npm test
+
       - name: Create Version Pull Request
         uses: changesets/action@v1
         with:

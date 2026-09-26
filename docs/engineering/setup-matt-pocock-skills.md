@@ -6,11 +6,15 @@ Those files are the only thing that varies between repos. The skills themselves 
 
 It is a prompt-driven skill, not a deterministic script. It reads your `git remote`, your existing `CLAUDE.md`, your existing `CONTEXT.md`, proposes what it found, and waits for you to confirm before writing anything.
 
+<!-- cat-skills:conversation-doc:start -->
+Conversation follows the [shared style](../../.agents/conversation-style.md): warm, gentle, and natural, with `喵！` at prose paragraph boundaries. Commands and technical artifacts stay exact.
+<!-- cat-skills:conversation-doc:end -->
+
 ## When to reach for it
 
 You invoke this by typing `/setup-matt-pocock-skills`; the [agent](https://www.aihero.dev/ai-coding-dictionary/agent) won't reach for it on its own. It is deliberately marked non-invokable, so no other skill can fire it for you.
 
-Reach for it once per repo, before the first use of any other engineering skill. If [triage](triage.md), [to-spec](to-spec.md), [to-tickets](to-tickets.md) or [wayfinder](wayfinder.md) start guessing where your issues go, or apply labels your tracker doesn't have, they have not been set up here yet. A repo already halfway through a project is a fine place to run it; the skill reads what is already there and no earlier work is wasted.
+Reach for it once per repo, before tracker-dependent engineering work. Storytelling and the Askcat guide work without it. If [triage](triage.md), [to-spec](to-spec.md), [to-tickets](to-tickets.md) or [wayfinder](wayfinder.md) start guessing where your issues go, or apply labels your tracker doesn't have, they have not been set up here yet. A repo already halfway through a project is a fine place to run it; the skill reads what is already there and no earlier work is wasted.
 
 ## Prerequisites
 
@@ -56,7 +60,7 @@ No. GitHub, GitLab and local markdown under `.scratch/` all ship as ready-made t
 
 **Do I need to re-run it after updating the skills?**
 
-Asked directly after v1.1, Matt said yes. The skill's own closing message is softer: it tells you re-running is only needed to switch trackers or start over. Both are defensible and the reason for the gap is real: the seed templates change between versions, so a `docs/agents/issue-tracker.md` written by an older release can go stale against the skills now reading it. If a downstream skill starts doing something the docs describe differently, re-running is the cheap fix.
+Earlier releases needed setup to be refreshed when the seed templates changed. The skill's own closing message is softer: it tells you re-running is only needed to switch trackers or start over. Both are defensible and the reason for the gap is real: the seed templates change between versions, so a `docs/agents/issue-tracker.md` written by an older release can go stale against the skills now reading it. If a downstream skill starts doing something the docs describe differently, re-running is the cheap fix.
 
 **It wrote to `CLAUDE.md`, but I'm on Codex.**
 
@@ -71,7 +75,7 @@ It doesn't. `docs/agents/triage-labels.md` is a *mapping*: it tells `/triage` wh
 
 **Can I configure the other skills' behaviour here ([grilling](https://www.aihero.dev/ai-coding-dictionary/grilling) cadence, question format, tone)?**
 
-No. It configures three things: tracker, labels, doc layout. There have been direct requests to make it the home for per-user preferences, and the standing answer is that skills stay opinionated: *"Config is death."* Preferences belong in your `CLAUDE.md` as plain instructions, which every skill already reads.
+Setup writes the fixed shared language and conversation-style rules as well as the tracker, labels, and doc layout. The default is a gentle, natural secretary-like voice with `喵！` at conversational paragraph boundaries; commands and technical artifacts are unchanged. Every skill also carries that rule locally, so it works before setup and in a standalone installation. Re-running setup refreshes its generated block without duplicating it or overwriting surrounding project preferences. It is not a questionnaire for tuning each skill's interview algorithm.
 
 **Can I keep the config in `~/.claude` instead of committing it to every repo?**
 
@@ -84,11 +88,11 @@ One long-standing complaint says yes, in these words: *"having a skill to set up
 ## It's working if
 
 - `docs/agents/issue-tracker.md` and `docs/agents/domain.md` exist, plus `triage-labels.md` if `triage` is installed.
-- An `## Agent skills` section appears in the instruction file your harness actually reads, with a one-line summary pointing at each of those files.
+- An `## Agent skills` section appears in the instruction file your harness actually reads, with the doc pointers and the shared language and conversation rules.
 - The tracker it proposed matches the remote you really use, and the label strings match labels that really exist in your tracker.
 - Afterwards, `/to-tickets` publishes without asking you where issues live, and `/triage` applies labels rather than inventing them.
 - Nothing in the skill files themselves changed. If setup edited a `SKILL.md`, something went wrong.
 
 ## Where it fits
 
-`setup-matt-pocock-skills` is the **run-once setup** for the engineering flow, the precondition everything else assumes rather than a step in the chain. Its neighbours are its readers: [triage](triage.md), which applies the label vocabulary written here; [to-spec](to-spec.md) and [to-tickets](to-tickets.md), which publish into the tracker named here; and [wayfinder](wayfinder.md), which reads the "Wayfinding operations" section of the same tracker file to know how maps and child [tickets](https://www.aihero.dev/ai-coding-dictionary/ticket) are stored. The domain-doc layout it records is the one [domain-modeling](domain-modeling.md) fills in later: it creates `CONTEXT.md` and ADRs lazily, when a term or decision actually gets resolved, so an empty repo after setup is the expected state. For which skill to reach for next, [ask-matt](ask-matt.md) routes the whole set.
+`setup-matt-pocock-skills` is the **run-once setup** for the engineering flow, the precondition tracker-dependent steps assume rather than a gate in front of every conversation. Its neighbours are its readers: [triage](triage.md), which applies the label vocabulary written here; [to-spec](to-spec.md) and [to-tickets](to-tickets.md), which publish into the tracker named here; and [wayfinder](wayfinder.md), which reads the "Wayfinding operations" section of the same tracker file to know how maps and child [tickets](https://www.aihero.dev/ai-coding-dictionary/ticket) are stored. The domain-doc layout it records is the one [domain-modeling](domain-modeling.md) fills in later: it creates `CONTEXT.md` and ADRs lazily, when a term or decision actually gets resolved, so an empty repo after setup is the expected state. For which skill to reach for next, [ask-matt](ask-matt.md) routes the whole set.

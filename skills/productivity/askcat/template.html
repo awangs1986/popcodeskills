@@ -5,11 +5,118 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>askcat</title>
 <style>
+  /* ASKCAT_MARKER_FONT_START */
+  /* Noto Sans SC subset, renamed Askcat Marker. Original license follows.
+Google Inc.
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+This license is copied below, and is also available with a FAQ at:
+http://scripts.sil.org/OFL
+
+
+-----------------------------------------------------------
+SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
+-----------------------------------------------------------
+
+PREAMBLE
+The goals of the Open Font License (OFL) are to stimulate worldwide
+development of collaborative font projects, to support the font creation
+efforts of academic and linguistic communities, and to provide a free and
+open framework in which fonts may be shared and improved in partnership
+with others.
+
+The OFL allows the licensed fonts to be used, studied, modified and
+redistributed freely as long as they are not sold by themselves. The
+fonts, including any derivative works, can be bundled, embedded,
+redistributed and/or sold with any software provided that any reserved
+names are not used by derivative works. The fonts and derivatives,
+however, cannot be released under any other type of license. The
+requirement for fonts to remain under this license does not apply
+to any document created using the fonts or their derivatives.
+
+DEFINITIONS
+"Font Software" refers to the set of files released by the Copyright
+Holder(s) under this license and clearly marked as such. This may
+include source files, build scripts and documentation.
+
+"Reserved Font Name" refers to any names specified as such after the
+copyright statement(s).
+
+"Original Version" refers to the collection of Font Software components as
+distributed by the Copyright Holder(s).
+
+"Modified Version" refers to any derivative made by adding to, deleting,
+or substituting -- in part or in whole -- any of the components of the
+Original Version, by changing formats or by porting the Font Software to a
+new environment.
+
+"Author" refers to any designer, engineer, programmer, technical
+writer or other person who contributed to the Font Software.
+
+PERMISSION & CONDITIONS
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of the Font Software, to use, study, copy, merge, embed, modify,
+redistribute, and sell modified and unmodified copies of the Font
+Software, subject to the following conditions:
+
+1) Neither the Font Software nor any of its individual components,
+in Original or Modified Versions, may be sold by itself.
+
+2) Original or Modified Versions of the Font Software may be bundled,
+redistributed and/or sold with any software, provided that each copy
+contains the above copyright notice and this license. These can be
+included either as stand-alone text files, human-readable headers or
+in the appropriate machine-readable metadata fields within text or
+binary files as long as those fields can be easily viewed by the user.
+
+3) No Modified Version of the Font Software may use the Reserved Font
+Name(s) unless explicit written permission is granted by the corresponding
+Copyright Holder. This restriction only applies to the primary font name as
+presented to the users.
+
+4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font
+Software shall not be used to promote, endorse or advertise any
+Modified Version, except to acknowledge the contribution(s) of the
+Copyright Holder(s) and the Author(s) or with their explicit written
+permission.
+
+5) The Font Software, modified or unmodified, in part or in whole,
+must be distributed entirely under this license, and must not be
+distributed under any other license. The requirement for fonts to
+remain under this license does not apply to any document created
+using the Font Software.
+
+TERMINATION
+This license becomes null and void if any of the above conditions are
+not met.
+
+DISCLAIMER
+THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
+OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE
+COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL
+DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
+OTHER DEALINGS IN THE FONT SOFTWARE.
+  */
+  @font-face {
+    font-family: "AskcatMarker";
+    src: url("data:font/woff2;base64,d09GMgABAAAAAAOkABEAAAAAB/wAAANLAAIBBgAAAAAAAAAAAAAAAAAAAAAAAAAAGYI8G4ESHGoGYAA0EQgKghyBdwE2AiQDCgsKAAQgBYQAByAMBxckGAobowYIngXu3oYI4KMbN8qTJpp4+NqP37n7FhNJDE1EPSSSakgkklWGJhb/+2vt9xCRxCz2TRyV5fhme4tmEplISGZRLESdrjkgGtwSj9Tg/udyemPhHR6u2uJ5hGH7t3lOKux9KjrgwziyOaiEA+z1fFliWebWzJF+FqyOsY4QGSH0+bezEGo6D47Lag4dHpqEQHdbskNysGhZQeJZcFuJC2kIEGs47LYW0wIs7qEWJFlrIwTeArI4v6b6+j0ryofuKwqPI1GelHVWv2pJYq0a6Z8UxpJivqD/mdWbjEocMCTrrrlyr3JpugcJQu7EVNffrNpMNCfOyUFz4pzZNGdjjmooSwkhrVyUo9C6EVy7gQCHpLKWKtx4Vc3lippEqVAtNA+ocDIPjEvblxH37ZupQqtWyBL5FxHS2bl4i4sqkU6nmcAYvIGYTxHDQKpRCQBUBeoCBg11RME27baMolSeJJ+MtkBAapO+oq1ahEKgpqwrUFkW0oB6WbLV742NdHQRiGfWARlURS1MBFaDgqgmSdm06+ura5v3wWwdtWfVUnNqV/bUSI0L5GTPfJ3cWNWMwm4NpaKpqnE6w85u9546c3L/bRx6V+PMGwdfzwhWX/Fu6rBJ3+7doDduvBn6Ji+Z5TWN+NFnZN9+paDnfPinD1qP+rT14TTo+3F4o3xyodOIoQdDXfVpcCS2ra/Ydn2Ytv9bDGndemrz5lNbt57i69eNiwECKWqVU87sWtDW919VVf/w7evhlxhV3i9eF32ByhII8smKKb4bRVS8FgwEMXspf7rqpUDWU0MxhZlX1XJVIjcAd/EsoblDS1LbU0uhrVdjZi2VrPZtqaxpjN+2tt6xHA+DD1GQkVMRKyjqOYjduqI1cQhPCkWVGEhP9FZJAsvvkmAU5UnxiSBb0qgUZFwcK47YFLcO8SgqoJAILC8O4ZpQtIFgxHFJ2LGyGBiFhGFEVhwxLi5pQw5G+OGGxeQkZKbdHCs9PYcowrjs1eATbJRSRDFcYRN6DhLEcjpGeXi0n3ZMiNsWJxWkGjQwkYaMMtGoFfazGETaVyiW5OPSciSKiCSpKI+QKqA8ohcz7XmUx+7nc6Kuir8VNT+f773xivcIwGQN9gA=") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+55B5, U+FF01;
+  }
+  .miao { font-family: "AskcatMarker", sans-serif; font-weight: 400; white-space: nowrap; }
+  /* ASKCAT_MARKER_FONT_END */
   :root{
     --bg:#fff8ec; --paper:#ffffff; --ink:#2f2a26; --muted:#786f68; --line:#e8dfd2;
     --orange:#f6a23c; --orange-dark:#d97b22; --cream:#fde9c9;
     --build:#3b6fd6; --build-bg:#e8effc; --fix:#d64545; --fix-bg:#fde8e8;
     --review:#2f8f5b; --review-bg:#e6f4ec; --tidy:#7a4fd0; --tidy-bg:#efe8fb;
+    --story:#c66071; --story-bg:#ffede7;
     --focus:#c9920e; --focus-bg:#fff3cf; --start:#5a5148; --start-bg:#efeae2; --other:#3a7f8f; --other-bg:#e4f2f4;
     --radius:18px; --shadow:0 2px 0 rgba(0,0,0,.06), 0 10px 30px rgba(80,60,30,.08);
   }
@@ -45,19 +152,19 @@
   .chapter .head{display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:center;margin-bottom:12px}
   .chapter .head .cat{width:110px;height:110px}
   .chapter .tag{display:inline-block;font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#fff;background:var(--c);border-radius:6px;padding:2px 8px;margin-bottom:6px}
-  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:14px}
   .card{border:1.5px solid var(--line);border-radius:14px;padding:14px 16px 12px;background:var(--cbg,#fafafa);display:flex;flex-direction:column;gap:8px;scroll-margin-top:90px}
   .card.hidden{display:none}
   .card .top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-  .card .name{font:700 1.05rem ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--c)}
+  .card .name{overflow-wrap:anywhere;font:700 1.05rem ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--c)}
   .pill{font-size:.72rem;font-weight:700;border-radius:999px;padding:2px 8px;border:1.5px solid currentColor}
   .pill.you{color:#8a4b08;background:#fff1dc}
   .pill.agent{color:#1f5b8a;background:#e3f0fb}
   .pill.beta{color:#7a4fd0;background:#f1eafc}
   .card .one{font-size:1rem;margin:0}
-  .card dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:.92rem}
+  .card dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 10px;font-size:.92rem}
   .card dt{color:var(--muted);white-space:nowrap;font-weight:600}
-  .card dd{margin:0}
+  .card dd{margin:0;overflow-wrap:anywhere}
   .card .ex{background:#fff;border:1.5px dashed var(--line);border-radius:10px;padding:8px 10px;font:0.88rem ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre-wrap;word-break:break-word}
   .card .tip{display:flex;gap:8px;align-items:flex-start;background:var(--cream);border-radius:10px;padding:8px 10px;font-size:.9rem}
   .card .tip svg{width:28px;height:28px;flex:none;margin-top:1px}
@@ -97,6 +204,20 @@
     body{background:#fff}
     section.block{box-shadow:none;break-inside:avoid}
   }
+  /* Coats are inline SVG/CSS, so the guide still works as one offline file. */
+  .cat{--fur:#f6a23c;--mark:#d97b22;--light:#fff4e3;--tail:#d97b22;--eye:#3e2a22}
+  .cat[data-mood=storyteller]{--fur:#fff4e3;--mark:#efa451;--tail:#4a4343;--eye:#42806a}
+  .cat[data-mood=detective]{--fur:#c3c7cf;--mark:#6d727c;--tail:#8b929e;--eye:#4c7284}
+  .cat[data-mood=guard]{--fur:#ba9170;--mark:#76523f;--tail:#76523f;--eye:#556d44}
+  .cat[data-mood=sweeper]{--fur:#efdfbf;--mark:#72503e;--tail:#72503e;--eye:#4d8cac}
+  .cat[data-mood=dizzy]{--fur:#95a5b3;--mark:#e1a276;--tail:#95a5b3;--eye:#b3793a}
+  .cat[data-mood=reader]{--fur:#50515b;--mark:#50515b;--light:#fff;--tail:#50515b;--eye:#91c7ad}
+  .cat .coat{display:none}
+  .cat[data-mood=storyteller] .coat-calico,.cat[data-mood=reader] .coat-tuxedo,
+  .cat[data-mood=sweeper] .coat-point,.cat[data-mood=dizzy] .coat-tortie{display:block}
+  .cat[data-mood=storyteller] .tabby-marks,.cat[data-mood=reader] .tabby-marks,
+  .cat[data-mood=sweeper] .tabby-marks,.cat[data-mood=dizzy] .tabby-marks{display:none}
+  .cat[data-mood=storyteller] .acc-book,.cat[data-mood=storyteller] .acc-sparkles{display:block}
   /* cat accessories */
   .cat .acc{display:none}
   .cat[data-mood=teacher] .acc-glasses,.cat[data-mood=teacher] .acc-pointer{display:block}
@@ -114,26 +235,43 @@
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
+    <clipPath id="cat-head-clip"><circle cx="100" cy="95" r="54"/></clipPath>
     <g id="cat-shape">
       <!-- tail -->
-      <path d="M150 168 q40 -10 30 -45 q-4 -14 -18 -10 q10 8 6 20 q-6 16 -28 22z" fill="#d97b22"/>
+      <path d="M150 168 q40 -10 30 -45 q-4 -14 -18 -10 q10 8 6 20 q-6 16 -28 22z" fill="var(--tail,#d97b22)"/>
       <!-- body -->
-      <ellipse cx="100" cy="165" rx="52" ry="30" fill="#f6a23c"/>
-      <path d="M74 150 q10 14 0 28 M100 146 q8 16 0 32 M126 150 q-10 14 0 28" stroke="#d97b22" stroke-width="5" fill="none" stroke-linecap="round"/>
-      <ellipse cx="100" cy="172" rx="26" ry="16" fill="#fff4e3"/>
+      <ellipse cx="100" cy="165" rx="52" ry="30" fill="var(--fur,#f6a23c)"/>
+      <path d="M74 150 q10 14 0 28 M100 146 q8 16 0 32 M126 150 q-10 14 0 28" class="tabby-marks" stroke="var(--mark,#d97b22)" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <ellipse cx="100" cy="172" rx="26" ry="16" fill="var(--light,#fff4e3)"/>
       <!-- ears -->
-      <path d="M52 78 L60 30 L96 62z" fill="#f6a23c"/><path d="M60 68 L64 42 L84 60z" fill="#f7b7c6"/>
-      <path d="M148 78 L140 30 L104 62z" fill="#f6a23c"/><path d="M140 68 L136 42 L116 60z" fill="#f7b7c6"/>
+      <path d="M52 78 L60 30 L96 62z" fill="var(--fur,#f6a23c)"/><path d="M60 68 L64 42 L84 60z" fill="#f7b7c6"/>
+      <path d="M148 78 L140 30 L104 62z" fill="var(--fur,#f6a23c)"/><path d="M140 68 L136 42 L116 60z" fill="#f7b7c6"/>
       <!-- head -->
-      <circle cx="100" cy="95" r="54" fill="#f6a23c"/>
-      <path d="M84 48 q6 14 0 26 M100 44 q6 16 0 30 M116 48 q-6 14 0 26" stroke="#d97b22" stroke-width="5" fill="none" stroke-linecap="round"/>
-      <path d="M50 96 q6 -6 12 0 M138 96 q6 -6 12 0" stroke="#d97b22" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <circle cx="100" cy="95" r="54" fill="var(--fur,#f6a23c)"/>
+      <path d="M84 48 q6 14 0 26 M100 44 q6 16 0 30 M116 48 q-6 14 0 26" class="tabby-marks" stroke="var(--mark,#d97b22)" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M50 96 q6 -6 12 0 M138 96 q6 -6 12 0" class="tabby-marks" stroke="var(--mark,#d97b22)" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <g class="coat coat-calico" clip-path="url(#cat-head-clip)">
+        <ellipse cx="63" cy="71" rx="33" ry="35" fill="#efa451"/>
+        <ellipse cx="142" cy="66" rx="27" ry="30" fill="#4a4343"/>
+        <path d="M101 50 q35 5 29 30 q-30 8 -32 -10z" fill="#efa451"/>
+      </g>
+      <g class="coat coat-tuxedo" clip-path="url(#cat-head-clip)">
+        <path d="M100 58 q-10 24 -8 31 q-5 12 -20 17 L77 134 L126 134 L131 105 q-19 -5 -22 -17z" fill="#fff"/>
+      </g>
+      <g class="coat coat-point" clip-path="url(#cat-head-clip)">
+        <ellipse cx="100" cy="97" rx="39" ry="38" fill="#72503e"/>
+      </g>
+      <g class="coat coat-tortie" clip-path="url(#cat-head-clip)">
+        <ellipse cx="67" cy="69" rx="28" ry="35" fill="#e1a276"/>
+        <ellipse cx="140" cy="110" rx="23" ry="29" fill="#e1a276"/>
+        <path d="M99 86 q12 8 8 25 l-13 3 q-4 -20 5 -28z" fill="#f5e4bf"/>
+      </g>
       <!-- muzzle -->
-      <ellipse cx="100" cy="112" rx="26" ry="18" fill="#fff4e3"/>
+      <ellipse cx="100" cy="112" rx="26" ry="18" fill="var(--light,#fff4e3)"/>
       <circle cx="72" cy="108" r="8" fill="#f8c6c0" opacity=".8"/><circle cx="128" cy="108" r="8" fill="#f8c6c0" opacity=".8"/>
       <!-- eyes -->
       <g class="eyes">
-        <ellipse cx="82" cy="92" rx="7" ry="9" fill="#2f2a26"/><ellipse cx="118" cy="92" rx="7" ry="9" fill="#2f2a26"/>
+        <ellipse cx="82" cy="92" rx="7" ry="9" fill="var(--eye,#2f2a26)"/><ellipse cx="118" cy="92" rx="7" ry="9" fill="var(--eye,#2f2a26)"/>
         <circle cx="84.5" cy="88.5" r="2.6" fill="#fff"/><circle cx="120.5" cy="88.5" r="2.6" fill="#fff"/>
       </g>
       <!-- nose + mouth -->
@@ -142,6 +280,16 @@
       <!-- whiskers -->
       <path d="M60 106 L34 100 M60 112 L34 116 M140 106 L166 100 M140 112 L166 116" stroke="#2f2a26" stroke-width="2" stroke-linecap="round"/>
       <!-- accessories -->
+      <g class="acc acc-book">
+        <path d="M58 142 Q82 134 100 145 Q118 134 142 142 L140 181 Q119 175 100 186 Q80 175 60 181z" fill="#bda4d4" stroke="#5d456c" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M64 139 Q83 133 100 145 Q117 133 136 139 L134 174 Q117 170 100 181 Q83 170 66 174z" fill="#fff5db"/>
+        <path d="M100 146 L100 180 M74 151 Q83 148 90 153 M111 152 Q120 147 129 150 M74 160 Q84 157 91 163" fill="none" stroke="#a386ba" stroke-width="2.5" stroke-linecap="round"/>
+      </g>
+      <g class="acc acc-sparkles" fill="#e3b653">
+        <path d="M29 111 l3 8 8 3 -8 3 -3 8 -3 -8 -8 -3 8 -3z"/>
+        <path d="M166 91 l2 6 6 2 -6 2 -2 6 -2 -6 -6 -2 6 -2z"/>
+      </g>
+
       <g class="acc acc-glasses"><circle cx="82" cy="92" r="13" fill="none" stroke="#2f2a26" stroke-width="3"/><circle cx="118" cy="92" r="13" fill="none" stroke="#2f2a26" stroke-width="3"/><path d="M95 92 L105 92 M69 90 L56 84 M131 90 L144 84" stroke="#2f2a26" stroke-width="3" stroke-linecap="round"/></g>
       <g class="acc acc-pointer"><path d="M148 150 L192 96" stroke="#8a5a2b" stroke-width="5" stroke-linecap="round"/><circle cx="192" cy="96" r="4" fill="#d64545"/></g>
       <g class="acc acc-hardhat"><path d="M52 62 q48 -46 96 0 L148 70 L52 70z" fill="#f4c542"/><rect x="44" y="66" width="112" height="9" rx="4" fill="#e0ab1e"/><rect x="94" y="30" width="12" height="20" rx="4" fill="#e0ab1e"/></g>
@@ -170,16 +318,49 @@
   document.documentElement.lang = D.lang || 'en';
   document.title = D.title || 'askcat';
   var L = D.labels || {};
-  var COLORS = {start:['--start','--start-bg'],build:['--build','--build-bg'],fix:['--fix','--fix-bg'],review:['--review','--review-bg'],tidy:['--tidy','--tidy-bg'],session:['--focus','--focus-bg'],other:['--other','--other-bg']};
-  var MOODBYCH = {start:'teacher',build:'builder',fix:'detective',review:'guard',tidy:'sweeper',session:'dizzy',other:'reader'};
+  var COLORS = {start:['--start','--start-bg'],story:['--story','--story-bg'],build:['--build','--build-bg'],fix:['--fix','--fix-bg'],review:['--review','--review-bg'],tidy:['--tidy','--tidy-bg'],session:['--focus','--focus-bg'],other:['--other','--other-bg']};
+  var MOODBYCH = {start:'teacher',story:'storyteller',build:'builder',fix:'detective',review:'guard',tidy:'sweeper',session:'dizzy',other:'reader'};
   var STORE = 'askcat:' + (D.source||'') + ':';
 
   function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
-  function cat(mood, cls){ return '<svg class="cat '+(cls||'')+'" data-mood="'+esc(mood||'teacher')+'" viewBox="0 0 200 200" role="img" aria-label="'+esc((D.cat&&D.cat.name)||'cat')+'"><use href="#cat-shape"/></svg>'; }
+  // Instantiate the owned SVG nodes: ancestor mood selectors do not cross a use shadow tree.
+  var CAT_SHAPE = document.getElementById('cat-shape').innerHTML;
+  var MIAO = '喵！';
+  var MOODS = ['teacher','storyteller','builder','detective','guard','sweeper','dizzy','reader'];
+  function prose(s){
+    if(s == null || !String(s).trim()) return '';
+    return String(s).split(/\n\s*\n/).filter(function(p){ return p.trim(); }).map(function(p){
+      var line = p.trim();
+      while(line.endsWith(MIAO)) line = line.slice(0, -MIAO.length).trimEnd();
+      return line ? esc(line) + ' <span class="miao">'+MIAO+'</span>' : '';
+    }).filter(Boolean).join('<br><br>');
+  }
+  function safeHref(value){
+    if(typeof value !== 'string' || !value || /[\u0000-\u0020\u007f\\]/.test(value) || value.startsWith('//')) return '';
+    if(/^[a-z][a-z0-9+.-]*:/i.test(value)){
+      try { if(!['https:','http:','file:'].includes(new URL(value).protocol)) return ''; }
+      catch(e){ return ''; }
+    }
+    return value;
+  }
+  function cat(mood, cls){
+    mood = MOODS.includes(mood) ? mood : 'teacher';
+    var label = (D.cat&&D.cat.name)||'cat';
+    if(D.cat&&D.cat.moods&&D.cat.moods[mood]) label += ': ' + D.cat.moods[mood];
+    return '<svg class="cat '+(cls||'')+'" data-mood="'+esc(mood)+'" viewBox="0 0 200 200" role="img" aria-label="'+esc(label)+'">'+CAT_SHAPE+'</svg>';
+  }
+  function skillMood(s,ch){ return s.mood || (s.name==='tell-a-story' ? 'storyteller' : ch.mood||MOODBYCH[ch.id]||'teacher'); }
   function chapterColor(ch){ var k = COLORS[ch.id] ? ch.id : (ch.color||'other'); var v = COLORS[k]||COLORS.other; return 'style="--c:var('+v[0]+');--cbg:var('+v[1]+')"'; }
   function allSkills(){ var out=[]; (D.chapters||[]).forEach(function(ch){ (ch.skills||[]).forEach(function(s){ out.push({s:s,ch:ch}); }); }); return out; }
-  function tried(name){ try{ return localStorage.getItem(STORE+name)==='1'; }catch(e){ return false; } }
-  function setTried(name,v){ try{ v?localStorage.setItem(STORE+name,'1'):localStorage.removeItem(STORE+name); }catch(e){} }
+  var sessionTried = Object.create(null);
+  function tried(name){
+    if(Object.prototype.hasOwnProperty.call(sessionTried,name)) return sessionTried[name];
+    try{ return localStorage.getItem(STORE+name)==='1'; }catch(e){ return false; }
+  }
+  function setTried(name,v){
+    sessionTried[name] = v;
+    try{ v?localStorage.setItem(STORE+name,'1'):localStorage.removeItem(STORE+name); }catch(e){}
+  }
 
   function card(s, ch){
     var h = '<article class="card'+(tried(s.name)?' done':'')+'" id="skill-'+esc(s.name)+'" data-name="'+esc(s.name)+'" data-text="'+esc((s.name+' '+s.oneLiner+' '+s.when+' '+s.see+' '+s.tip+' '+s.example).toLowerCase())+'">';
@@ -187,25 +368,26 @@
     h += '<span class="pill '+(s.invoke==='you'?'you':'agent')+'">'+esc(s.invoke==='you'?L.youType:L.agentUses)+'</span>';
     if(s.beta) h += '<span class="pill beta">'+esc(L.beta)+'</span>';
     h += '</div>';
-    h += '<p class="one">'+esc(s.oneLiner)+'</p>';
+    h += '<p class="one">'+prose(s.oneLiner)+'</p>';
     h += '<dl>';
-    if(s.when) h += '<dt>'+esc(L.when)+'</dt><dd>'+esc(s.when)+'</dd>';
-    if(s.see) h += '<dt>'+esc(L.see)+'</dt><dd>'+esc(s.see)+'</dd>';
+    if(s.when) h += '<dt>'+esc(L.when)+'</dt><dd>'+prose(s.when)+'</dd>';
+    if(s.see) h += '<dt>'+esc(L.see)+'</dt><dd>'+prose(s.see)+'</dd>';
     h += '</dl>';
     if(s.example) h += '<div><div class="meta" style="margin-bottom:3px">'+esc(L.example)+'</div><div class="ex">'+esc(s.example)+'</div></div>';
-    if(s.tip) h += '<div class="tip">'+cat(ch.mood||MOODBYCH[ch.id]||'teacher')+'<div><b>'+esc(L.tip)+'</b> '+esc(s.tip)+'</div></div>';
-    if(s.working||s.broken){ h += '<div class="tells">'; if(s.working) h+='<div class="ok">'+esc(s.working)+'</div>'; if(s.broken) h+='<div class="bad">'+esc(s.broken)+'</div>'; h+='</div>'; }
+    if(s.tip) h += '<div class="tip">'+cat(skillMood(s,ch))+'<div><b>'+esc(L.tip)+'</b> '+prose(s.tip)+'</div></div>';
+    if(s.working||s.broken){ h += '<div class="tells">'; if(s.working) h+='<div class="ok">'+prose(s.working)+'</div>'; if(s.broken) h+='<div class="bad">'+prose(s.broken)+'</div>'; h+='</div>'; }
     h += '<div class="foot"><label><input type="checkbox" data-tried="'+esc(s.name)+'"'+(tried(s.name)?' checked':'')+'> '+esc(L.tried)+'</label>';
-    if(s.file) h += '<a href="'+esc(s.file)+'" target="_blank" rel="noopener">'+esc(L.openFile)+'</a>';
+    if(safeHref(s.file)) h += '<a href="'+esc(safeHref(s.file))+'" target="_blank" rel="noopener">'+esc(L.openFile)+'</a>';
     h += '</div></article>';
     return h;
   }
 
   function render(){
     var h = '';
-    h += '<header class="hero"><div><h1>'+esc(D.title)+'</h1><p class="sub">'+esc(D.subtitle)+'</p>';
-    h += '<div class="bubble left">'+esc(D.intro&&D.intro.bubble)+'</div>';
-    h += '<p class="meta" style="margin-top:10px">'+esc(D.source||'')+(D.generated?' · '+esc(D.generated):'')+'</p></div>';
+    h += '<header class="hero"><div><h1>'+esc(D.title)+'</h1><p class="sub">'+prose(D.subtitle)+'</p>';
+    h += '<div class="bubble left">'+prose(D.intro&&D.intro.bubble)+'</div>';
+    h += '<p class="meta scope" style="margin-top:10px">'+esc(D.scope==='repository'?L.repositoryScope:L.installedScope)+'</p>';
+    h += '<p class="meta">'+esc(D.source||'')+(D.generated?' · '+esc(D.generated):'')+'</p></div>';
     h += '<div class="catbox">'+cat('teacher')+'</div></header>';
 
     h += '<nav class="toc"><a href="#picker">'+esc(L.picker)+'</a>';
@@ -217,30 +399,30 @@
     var n = allSkills().length, t = allSkills().filter(function(x){return tried(x.s.name);}).length;
     h += '<div class="progress"><span>'+esc(L.progress)+'</span><div class="bar"><i id="bar" style="width:'+(n?Math.round(100*t/n):0)+'%"></i></div><span id="cnt">'+t+' / '+n+'</span></div>';
 
-    if(D.intro){ h += '<section class="block"><h2>'+esc(D.intro.heading)+'</h2>'; (D.intro.paragraphs||[]).forEach(function(p){ h+='<p>'+esc(p)+'</p>'; }); h += '</section>'; }
+    if(D.intro){ h += '<section class="block"><h2>'+esc(D.intro.heading)+'</h2>'; (D.intro.paragraphs||[]).forEach(function(p){ h+='<p>'+prose(p)+'</p>'; }); h += '</section>'; }
 
-    if(D.picker){ h += '<section class="block picker" id="picker"><h2>'+esc(L.picker)+'</h2><p class="blurb">'+esc(L.pickerIntro)+'</p><div id="pk"></div></section>'; }
+    if(D.picker){ h += '<section class="block picker" id="picker"><h2>'+esc(L.picker)+'</h2><p class="blurb">'+prose(L.pickerIntro)+'</p><div id="pk"></div></section>'; }
 
     (D.chapters||[]).forEach(function(ch){
       h += '<section class="block chapter" id="chapter-'+esc(ch.id)+'" '+chapterColor(ch)+'>';
-      h += '<div class="head">'+cat(ch.mood||MOODBYCH[ch.id]||'teacher')+'<div><span class="tag">'+esc(L.chapters)+'</span><h2>'+esc(ch.title)+'</h2><p class="blurb">'+esc(ch.blurb)+'</p>';
-      if(ch.bubble) h += '<div class="bubble left">'+esc(ch.bubble)+'</div>';
+      h += '<div class="head">'+cat(ch.mood||MOODBYCH[ch.id]||'teacher')+'<div><span class="tag">'+esc(L.chapters)+'</span><h2>'+esc(ch.title)+'</h2><p class="blurb">'+prose(ch.blurb)+'</p>';
+      if(ch.bubble) h += '<div class="bubble left">'+prose(ch.bubble)+'</div>';
       h += '</div></div><div class="cards">';
       (ch.skills||[]).forEach(function(s){ h += card(s, ch); });
-      h += '</div><p class="empty nomatch" hidden>'+esc(L.noMatch)+'</p></section>';
+      h += '</div><p class="empty nomatch" hidden>'+prose(L.noMatch)+'</p></section>';
     });
 
     if(D.firstRun&&D.firstRun.length){
       h += '<section class="block" id="firstrun"><h2>'+esc(L.firstRun)+'</h2><ol class="steps">';
-      D.firstRun.forEach(function(st){ h += '<li><div><div class="t">'+esc(st.type)+'</div><div class="w">'+esc(st.watch)+'</div></div></li>'; });
+      D.firstRun.forEach(function(st){ h += '<li><div><div class="t">'+esc(st.type)+'</div><div class="w">'+prose(st.watch)+'</div></div></li>'; });
       h += '</ol></section>';
     }
     if(D.glossary&&D.glossary.length){
       h += '<section class="block" id="glossary"><h2>'+esc(L.glossary)+'</h2><div class="gloss">';
-      D.glossary.forEach(function(g){ h += '<div><b>'+esc(g.term)+'</b> · '+esc(g.plain)+'</div>'; });
+      D.glossary.forEach(function(g){ h += '<div><b>'+esc(g.term)+'</b> · '+prose(g.plain)+'</div>'; });
       h += '</div></section>';
     }
-    h += '<footer>'+esc(D.footer||'')+'</footer>';
+    h += '<footer>'+prose(D.footer||'')+'</footer>';
     app.innerHTML = h;
 
     // progress ticks
@@ -263,7 +445,11 @@
       });
     });
     if(D.picker) picker();
-    if(location.hash){ var tgt = document.querySelector(location.hash); if(tgt) setTimeout(function(){ tgt.scrollIntoView({block:'start'}); }, 50); }
+    if(location.hash){
+      var id; try { id = decodeURIComponent(location.hash.slice(1)); } catch(e){ id = ''; }
+      var tgt = document.getElementById(id);
+      if(tgt) setTimeout(function(){ tgt.scrollIntoView({block:'start'}); }, 50);
+    }
   }
 
   function picker(){
@@ -273,7 +459,7 @@
     function show(id){
       var qq = byId[id]; if(!qq){ box.innerHTML = '<p class="empty">?</p>'; return; }
       var h = trail.length ? '<div class="crumbs">'+trail.map(esc).join(' › ')+'</div>' : '';
-      h += '<div class="q">'+esc(qq.text)+'</div><div class="opts">';
+      h += '<div class="q">'+prose(qq.text)+'</div><div class="opts">';
       qq.options.forEach(function(o,i){ h += '<button data-i="'+i+'">'+esc(o.label)+'</button>'; });
       h += '</div>' + (trail.length ? '<button class="restart" data-restart>'+esc(L.restart)+'</button>' : '');
       box.innerHTML = h;
@@ -281,10 +467,10 @@
       var r = box.querySelector('[data-restart]'); if(r) r.addEventListener('click', function(){ trail = []; show(P.start); });
     }
     function result(o){
-      var x = skills[o.skill], mood = x ? (x.ch.mood||MOODBYCH[x.ch.id]||'teacher') : 'teacher';
+      var x = skills[o.skill], mood = x ? skillMood(x.s,x.ch) : 'teacher';
       var h = '<div class="crumbs">'+trail.map(esc).join(' › ')+'</div><div class="result">'+cat(mood)+'<div>';
       h += '<div class="meta">'+esc(L.result)+'</div><div class="q" style="margin:2px 0 6px"><a href="#skill-'+esc(o.skill)+'">'+(x&&x.s.invoke==='you'?'/':'')+esc(o.skill)+'</a></div>';
-      if(x) h += '<p style="margin:0 0 8px">'+esc(x.s.oneLiner)+'</p>';
+      if(x) h += '<p style="margin:0 0 8px">'+prose(x.s.oneLiner)+'</p>';
       if(o.prompt) h += '<div class="ex">'+esc(o.prompt)+'</div>';
       h += '</div></div><button class="restart" data-restart>'+esc(L.restart)+'</button>';
       box.innerHTML = h;

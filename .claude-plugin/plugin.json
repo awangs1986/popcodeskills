@@ -21,6 +21,7 @@
   "skills": [
     "./skills/engineering/ask-matt",
     "./skills/engineering/vibe",
+    "./skills/engineering/tell-a-story",
     "./skills/engineering/refocus",
     "./skills/engineering/diagnosing-bugs",
     "./skills/engineering/grill-with-docs",

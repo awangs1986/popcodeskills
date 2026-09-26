@@ -4,6 +4,10 @@
 
 It is deliberately not an audit. Five things, under four hundred words, and a "checked and clean" line for whichever of the five had nothing. Where it can't tell whether a route is meant to be public, it asks rather than guessing either way.
 
+<!-- cat-skills:conversation-doc:start -->
+Conversation follows the [shared style](../../.agents/conversation-style.md): warm, gentle, and natural, with `喵！` at prose paragraph boundaries. Commands and technical artifacts stay exact.
+<!-- cat-skills:conversation-doc:end -->
+
 ## When to reach for it
 
 Type `/security-review`, or the agent reaches for it automatically when a task fits. `code-review` spawns it as a third sub-agent whenever the diff touches a route, auth, a query or migration, env or config, or a dependency manifest; you can also run it on its own before anything first faces the internet.

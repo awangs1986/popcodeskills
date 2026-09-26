@@ -10,6 +10,8 @@ Act whenever a promoted skill is added, renamed, or has its behaviour changed: c
 
 There is no H1. GitHub shows the file name, and upstream's site took the title from the slug; keep the pages the same shape.
 
+The short shared conversation note is synchronized from [conversation-style.md](./conversation-style.md) before `When to reach for it`. Keep it current with `npm run sync-conversation-style`, not by editing its copies. It describes the human-facing voice; it does not change the skill-specific defining constraint below.
+
 ## Page structure
 
 Fill the template below, keeping its order. The **fixed frame** (`## What it does`, `## When to reach for it`, `## Where it fits`) appears on every page. `## Prerequisites` and the free-form substance sections carry only what this particular skill needs; delete the rest.
