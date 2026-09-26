@@ -1,6 +1,6 @@
 {
   "name": "cat-skills",
-  "version": "1.2.3",
+  "version": "1.3.0",
   "description": "Cat Skills: a complete vibe-coding workflow for one developer and one agent, built on Matt Pocock's skills. The /vibe dispatcher, grilling, spec/ticket flows, TDD, verify, test audit, code and security review, session takeover, and a cat that explains it all.",
   "author": {
     "name": "awangs1986",

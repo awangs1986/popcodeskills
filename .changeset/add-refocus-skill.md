@@ -1,5 +1,0 @@
----
-"cat-skills": minor
----
-
-Add the `refocus` skill (engineering bucket, user-invoked). For the long session where the agent has drifted: it re-reads the spec or ticket, `CONTEXT.md`, the ADRs in the area, and every decision the user made in conversation that never reached a file, all from their primary sources rather than from memory; diffs them against what has actually been built; and hands back a one-screen brief (goal, binding decisions, done, remaining, drift as dropped / drifted / contradicted / leftovers, next step, context recommendation), then, where the sources leave something ambiguous, asks one bounded round of questions in the `grilling` format (at most five, each with a recommended answer) and writes the answers back to the spec, ticket, or `CONTEXT.md` before resuming. A second round, or a source that turns out to be wrong, escalates to `grill-with-docs` and `to-spec` instead of looping. The brief is also written to the OS temp dir so it can seed a later `/compact` or `/handoff`. Wired into `ask-matt` (standalone list and the phase-boundaries section), `PHASE-BOUNDARIES.md`, and the `vibe` workflow's kit and context rules.

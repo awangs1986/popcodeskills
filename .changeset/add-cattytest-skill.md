@@ -1,5 +1,0 @@
----
-"cat-skills": minor
----
-
-Add the `cattytest` skill (engineering bucket, user-invoked). Designs the test cases that prove the software did what the user actually wanted, from the user's side of the screen, as opposed to the gates the agent writes for itself in `tdd` (which check what the agent understood, and all pass when the understanding is the bug). One scope question (this feature or the whole product), a silent read of the ticket, the entry points and the existing gates, then a grilling session along eight branches: the apple (what had to be true in the world afterwards), proxies (how every existing gate can be green while the outcome is missing), the walk, real data, evidence, the ways a real person breaks it, who runs each case, and the line before merge. Output is a `test-cases.md` beside the spec: numbered cases in the user's words with steps, data, the apple, the evidence and a runner (`verify`, by hand, or automated), plus a list of gates that don't count as proof. Designs, never runs or codes; `verify` walks the sheet, and each FAIL returns to `tdd` as before. `vibe` routes "green but it doesn't do what I want" to it.
