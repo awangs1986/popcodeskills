@@ -4,6 +4,8 @@ A solo developer's path through this repo's skills. One person, one agent, one c
 
 The whole workflow is **four lanes** and **one setup step**. You are always in exactly one lane. `/vibe` puts you in it and names the next command; this file is the map it reads from. The same map as a one-page poster: [docs/engineering/vibe-workflow-poster.png](../../../docs/engineering/vibe-workflow-poster.png).
 
+Before setup or sizing, `/tell-a-story` can align a product experience you cannot yet describe. It is an optional Build on-ramp, not a fifth lane.
+
 ```
                     once per repo:  /setup-matt-pocock-skills, /setup-feedback-loops
                                         │
@@ -49,7 +51,7 @@ flowchart LR
 
 ## Setup, once per repo
 
-Run `/setup-matt-pocock-skills` before anything else in a new repo. Three answers:
+Before building or publishing work in a new repo, run `/setup-matt-pocock-skills`. Storytelling with `/tell-a-story` can happen before this setup. Three answers:
 
 | Question | Solo default | Switch when |
 | --- | --- | --- |
@@ -57,7 +59,7 @@ Run `/setup-matt-pocock-skills` before anything else in a new repo. Three answer
 | Triage labels | Accept defaults | Never, for solo work. `triage` is not in this kit |
 | Domain docs | Single context (`CONTEXT.md` + `docs/adr/`) | Only a real monorepo |
 
-It writes `docs/agents/*.md` and an `## Agent skills` block into your `CLAUDE.md` / `AGENTS.md`. Every skill below reads those files, so this is the one step you can't skip.
+It writes `docs/agents/*.md` and an `## Agent skills` block into your `CLAUDE.md` / `AGENTS.md`. The tracker-dependent engineering steps below read those files, so configure them before publishing or implementing work. Product stories and local product drafts do not need them.
 
 Then, in the same sitting:
 
@@ -96,7 +98,7 @@ Write down every place the agent did the "broken if" thing. That list is the fir
 
 ## The kit
 
-Twenty-five skills. Fourteen you type, eleven the agent reaches for on its own (and you can type too).
+Twenty-six skills. Fifteen you type, eleven the agent reaches for on its own (and you can type too). [ROUTES.md](ROUTES.md) accounts for every promoted skill, including the ones deliberately outside this kit; the repository check catches new skills that have no routing guidance.
 
 **You type these** (user-invoked):
 
@@ -105,6 +107,7 @@ Twenty-five skills. Fourteen you type, eleven the agent reaches for on its own (
 | `/vibe` | The dispatcher: picks the lane, sizes the work, names the next command |
 | `/setup-matt-pocock-skills` | Once per repo: tracker, labels, domain docs |
 | `/setup-feedback-loops` | Once per repo: typecheck, lint, tests, smoke, logs, browser, guardrail, each proven red |
+| `/tell-a-story` | Product alignment through a story: 1 you tell, 2 the agent tells from the workspace. Revise together, confirm, then optionally draft a product SPEC or BACKLOG. Works before setup |
 | `/grill-with-docs` | The interview. Sharpens the idea, writes `CONTEXT.md` and ADRs as you go |
 | `/to-spec` | Synthesises the conversation into a spec. No new questions |
 | `/to-tickets` | Cuts the spec into tracer-bullet tickets with blocking edges |
@@ -115,7 +118,7 @@ Twenty-five skills. Fourteen you type, eleven the agent reaches for on its own (
 | `/handoff` | The outgoing session writes a portable file, when the work moves directory, harness, or forks a side task. The bridge out to a prototype and back |
 | `/takeover` | The incoming session rebuilds context from a record (ID, export, URL, handoff file) when the old one is gone or too long to trust. Confirms before it changes anything |
 | `/wait-what` | The agent said something you didn't follow. It re-pitches in plain words |
-| `/askcat` | One HTML page where a cat explains every skill you have installed: what it does, when to type it, what a good run looks like, plus a "which one do I need?" picker. The kit, taught. Run it once after setup and again when the kit changes |
+| `/askcat` | One HTML page where a cat explains every skill you have installed: what it does, when to type it, what a good run looks like, plus a "which one do I need?" picker. The kit, taught. It works before setup; regenerate when the installed set changes |
 
 **The agent reaches for these** (model-invoked):
 
@@ -137,6 +140,7 @@ Twenty-five skills. Fourteen you type, eleven the agent reaches for on its own (
 
 | Skill | Why it's out | Bring it back when |
 | --- | --- | --- |
+| `ask-matt` | The full map, not the smaller solo kit | The work involves a team or a situation this kit deliberately leaves out |
 | `wayfinder` | Dense multi-session planning for efforts too foggy for one head | You start a greenfield product, or you're splitting a grown project into packages (see *When the project gets big*) |
 | `triage` | Processes issues *other people* filed | You have users filing bugs |
 | `to-questionnaire` | Extracts answers from someone else's head | A stakeholder appears |
@@ -145,9 +149,24 @@ Twenty-five skills. Fourteen you type, eleven the agent reaches for on its own (
 | `retro` (in-progress) | Beta, not in the plugin | The same finding shows up twice: see *The loop that improves the loop* |
 | `teach`, `writing-for-agents`, `grill-me` | Not code work; `grill-me` is `grill-with-docs` without the repo. `askcat` is `teach` pointed at this kit, and it *is* in | Never, inside a repo |
 
+## Choose the question before the command
+
+A similar phrase can mean a different job. The dispatcher and Askcat's picker use these boundaries, not a keyword race:
+
+| What is missing? | Next skill |
+| --- | --- |
+| A shared picture of the product experience | `/tell-a-story` |
+| Cases that would prove the agreed experience | `/cattytest` |
+| Evidence from running already-agreed cases | `verify` |
+| Confidence in what the existing tests claim or detect | `test-audit` |
+| Facts about a library or API | `research`, which is part of the kit |
+| A route through decisions too large for one session | `/wayfinder`, for greenfield work as well as a project split |
+
+An explicit command takes precedence. If the intention is still ambiguous, one considerate clarification is better than launching several flows. A guide, story, clarification, or session-recovery request is handled before setup checks. Setup is a prerequisite for the work that needs its files, not a toll booth in front of every conversation. User-invoked skills remain yours to type.
+
 ## Lane 1: BUILD
 
-You have an idea. The one decision that matters is **size**, because size decides how much ceremony you pay for. Answer these in order; the first yes wins.
+You have an idea. Once the intended experience is shared, the decision that matters is **size**, because size decides how much ceremony you pay for. If that experience is still hard to describe, take the story on-ramp below first. Otherwise answer these in order; the first yes wins.
 
 | Ask yourself | Size | Ceremony |
 | --- | --- | --- |
@@ -156,6 +175,14 @@ You have an idea. The one decision that matters is **size**, because size decide
 | Neither: it spans sittings, or I'll forget the decisions by tomorrow | **L** | Grill, spec, tickets, one fresh window per ticket |
 
 Most vibe-coding sessions are S or M. Reach for L when you notice yourself re-explaining the same decision to the agent in a second session; that is the cost L exists to remove.
+
+### Before sizing: tell a story
+
+You know how you want using the product to feel, but not how to write requirements. Or there is already code, and you want to know whether it describes the product in your head. **`/tell-a-story`** starts with a choice: **1**, you tell the agent a user journey; **2**, the agent reads the workspace and tells you one. It uses concrete scenes and everyday analogies, keeps source-supported behavior separate from uncertainty and desired changes, and asks one focused question at a time. Correct the scenes for as many rounds as needed.
+
+Confirm the latest story before it becomes requirements. Then choose a product **SPEC**, a proposed **BACKLOG**, both, or just the story. Saved conversions include `story.md`; backlog items are drafts under `backlog/`, not live issues under `issues/`. No technical-stack choice, issue publication, or implementation happens here, and no setup is needed to begin.
+
+Carry that agreement into `/grill-with-docs` if design decisions remain, or into `/to-spec` and `/to-tickets` when ready to prepare execution work. The story is an input, not a reason to skip technical planning or its acceptance checks. Set up the tracker before publishing work and the feedback loops before building it. A huge set of unresolved decisions still belongs in `/wayfinder`; proof of an already-agreed experience belongs in `/cattytest`.
 
 ### S: the one-liner
 
@@ -280,10 +307,11 @@ The example is the whole trick. It is the smallest possible feedback loop, and `
 
 ## Context rules
 
-Eight rules cover nearly every session. The full decision tree is in `ask-matt`'s `PHASE-BOUNDARIES.md`; these are the cases a solo developer actually hits. `/clear` and `/compact` are written the Claude Code way; read them as whatever your agent calls starting a fresh window and compressing the current one (Codex: `/new` and `/compact`).
+These rules cover nearly every session. The full decision tree is in `ask-matt`'s `PHASE-BOUNDARIES.md`; these are the cases a solo developer actually hits. `/clear` and `/compact` are written the Claude Code way; read them as whatever your agent calls starting a fresh window and compressing the current one (Codex: `/new` and `/compact`).
 
 | Situation | Do |
 | --- | --- |
+| Story → design decisions → spec → tickets | **Stay.** Keep the agreed scenes and corrections available; saved product drafts are the source if the work resumes later |
 | Grill → spec → tickets | **Stay.** One window, no compacting. The spec needs the reasoning verbatim |
 | Grill → implement (M) | **Stay.** Same reason |
 | Between tickets (L) | **`/clear`.** Each ticket is self-contained; the last one's context is disposable |
@@ -372,8 +400,11 @@ docs/adr/NNNN-*.md                  decisions you don't want re-argued
 docs/agents/issue-tracker.md        where issues live (written by setup)
 docs/agents/domain.md               how to read the domain docs (written by setup)
 docs/agents/feedback-loops.md       the check commands and their timings (written by setup-feedback-loops)
-.scratch/<feature>/spec.md          one per L build
-.scratch/<feature>/issues/NN-*.md   its tickets
+.scratch/<feature>/story.md         the approved product story, when used
+.scratch/<feature>/spec.md          a product draft or L build spec; check its status
+.scratch/<feature>/backlog.md       proposed work index, before tracked issues
+.scratch/<feature>/backlog/NN-*.md  draft work items, not an execution queue
+.scratch/<feature>/issues/NN-*.md   published local tracker issues
 ```
 
 Commit `CONTEXT.md`, `docs/`, and `.scratch/` (it is the paper trail; `to-spec` and `implement` read it). Keep `prototype/*` branches out of `main`.
@@ -391,6 +422,7 @@ Commit `CONTEXT.md`, `docs/`, and `.scratch/` (it is the paper trail; `to-spec` 
 | Not think about any of this, or remember where I was | `/vibe` |
 | Try the whole workflow once on a small project | `/vibe` in a fresh repo; it hands back the *First run* sequence and checks each step with you |
 | Set up a new repo | `/setup-matt-pocock-skills`, then `/setup-feedback-loops` |
+| Describe the product I want, or hear what using this workspace would be like | `/tell-a-story`: choose 1 to tell, 2 to listen; agree the story before optional SPEC / BACKLOG drafts |
 | Build something small | Just say it (add "test first") |
 | Build something with open questions | `/grill-with-docs` → `/implement` |
 | Build something big | `/grill-with-docs` → `/to-spec` → `/to-tickets` → per ticket `/clear` + `/implement` |

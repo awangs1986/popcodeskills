@@ -4,6 +4,10 @@
 
 It reads files rather than recalling them. The requirements sit at the start of the [context window](https://www.aihero.dev/ai-coding-dictionary/context-window), where attention is weakest by the time you need this; the code just written sits at the end, where attention is strongest. Re-reading moves the requirements to the end. That mechanism is why the skill forbids summarising from memory: memory is what drifted.
 
+<!-- cat-skills:conversation-doc:start -->
+Conversation follows the [shared style](../../.agents/conversation-style.md): warm, gentle, and natural, with `喵！` at prose paragraph boundaries. Commands and technical artifacts stay exact.
+<!-- cat-skills:conversation-doc:end -->
+
 ## When to reach for it
 
 You invoke this by typing `/refocus`; the agent won't reach for it on its own.

@@ -1,6 +1,7 @@
 from PIL import Image, ImageDraw, ImageFont
 import re, math, os
 from pathlib import Path
+from functools import lru_cache
 
 W, H = 2000, 3920
 BG = (255, 248, 236)
@@ -10,12 +11,15 @@ GRAY = (120, 112, 104)
 HERE = Path(__file__).resolve().parent
 FONTS = Path(os.environ.get("POSTER_FONTS", HERE / "fonts"))
 MONO_PATH = os.environ.get("POSTER_MONO", "/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf")
+@lru_cache(maxsize=None)
 def F(size, bold=True):
     return ImageFont.truetype(str(FONTS / ("NotoSansSC-700-full.ttf" if bold else "NotoSansSC-400-full.ttf")), size)
+@lru_cache(maxsize=None)
 def MONO(size):
     return ImageFont.truetype(MONO_PATH, size)
 
 LANES = {
+    "story":  dict(fill=(255, 237, 231), edge=(198, 96, 113), dark=(144, 54, 76)),
     "setup":  dict(fill=(238, 236, 231), edge=(120, 112, 104), dark=(90, 84, 78)),
     "build":  dict(fill=(222, 235, 255), edge=(59, 111, 214), dark=(35, 75, 160)),
     "fix":    dict(fill=(255, 226, 220), edge=(217, 83, 79),  dark=(160, 50, 46)),
@@ -29,8 +33,16 @@ d = ImageDraw.Draw(img)
 
 # ---------- text helpers ----------
 def tokens(s):
-    # NOTE: newline first so an explicit break always tokenizes on its own.
-    return re.findall(r"[A-Za-z0-9_/\\-\\.:,'\\(\\)\\+→←=<>#\\*]+|\n|\s+|.", s)
+    # Keep commands intact and closing punctuation with the preceding word/glyph.
+    raw = re.findall(r"[A-Za-z0-9_/.:,'()+→←=<>#*-]+|\n|[ \t]+|.", s)
+    closing = "\u3001\u3002\uff0c\uff01\uff1f\uff1b\uff1a\uff09\u3011\u300b\u3009\u201d\u2019?!;:.)]}"
+    grouped = []
+    for token in raw:
+        if token in closing and grouped and not grouped[-1].isspace():
+            grouped[-1] += token
+        else:
+            grouped.append(token)
+    return grouped
 
 def wrap(s, font, maxw):
     lines, cur = [], ""
@@ -142,21 +154,15 @@ def edge_label(x, y, s, color=GRAY, size=26):
 
 # ---------- cats ----------
 def load_cat(path, height):
-    im = Image.open(path).convert("RGBA")
-    # flood-fill background from corners to magenta, then key out
-    from PIL import ImageDraw as ID
-    key = (255, 0, 255, 255)
-    for xy in [(2, 2), (im.width - 3, 2), (2, im.height - 3), (im.width - 3, im.height - 3)]:
-        ID.floodfill(im, xy, key, thresh=45)
-    px = im.load()
-    for y in range(im.height):
-        for x in range(im.width):
-            r, g, b, a = px[x, y]
-            if r > 230 and g < 40 and b > 230:
-                px[x, y] = (0, 0, 0, 0)
-    bbox = im.getbbox(); im = im.crop(bbox)
-    s = height / im.height
-    return im.resize((int(im.width * s), height), Image.LANCZOS)
+    # Assets are transparent cutouts; preserve white fur and fine coat markings.
+    with Image.open(path) as source:
+        im = source.convert("RGBA")
+    bbox = im.getbbox()
+    if bbox is None:
+        raise ValueError(f"Empty mascot: {path}")
+    im = im.crop(bbox)
+    scale = height / im.height
+    return im.resize((round(im.width * scale), height), Image.Resampling.LANCZOS)
 
 def paste_cat(cat, x, y):
     img.paste(cat, (int(x), int(y)), cat)
@@ -182,21 +188,22 @@ def bubble(x0, y0, x1, y1, s, tail, size=28, fill=(255, 255, 255), edge=INK):
     for l in lines:
         d.text((x0 + 25, y), l, font=f, fill=INK); y += lh
 
-cat_teacher = load_cat((HERE / "cats" / "cat_teacher.png"), 330)
+cat_teacher = load_cat((HERE / "cats" / "cat_teacher.png"), 250)
 cat_det = load_cat((HERE / "cats" / "cat_detective.png"), 165)
 cat_clip = load_cat((HERE / "cats" / "cat_clipboard.png"), 240)
-cat_broom = load_cat((HERE / "cats" / "cat_broom.png"), 155)
+cat_broom = load_cat((HERE / "cats" / "cat_broom.png"), 170)
 cat_dizzy = load_cat((HERE / "cats" / "cat_dizzy.png"), 190)
-cat_shield = load_cat((HERE / "cats" / "cat_shield.png"), 155)
+cat_shield = load_cat((HERE / "cats" / "cat_shield.png"), 175)
+cat_storyteller = load_cat((HERE / "cats" / "cat_storyteller.png"), 285)
 
 # =================== HEADER ===================
-d.text((80, 60), "The Vibe Coding Workflow", font=F(72), fill=INK)
-d.text((84, 160), "One developer + one agent, a closed loop  ·  with a cat guide", font=F(30, False), fill=GRAY)
+d.text((80, 60), "The Vibe Coding Workflow", font=F(66), fill=INK)
+d.text((84, 160), "One person + one agent. A closed loop, guided by cats.", font=F(30, False), fill=GRAY)
 paste_cat(cat_teacher, 1640, 10)
-bubble(1100, 40, 1600, 215, "Not sure where to start? Type /vibe in the project. I'll put you on the right lane and name the next command.", (1650, 150), size=27)
+bubble(1100, 40, 1600, 215, "Not sure what to type?\nStart with /vibe.\nLet's find your next step.", (1650, 150), size=27)
 
 # =================== SETUP BAND ===================
-panel(80, 330, 1920, 650, "setup", "Step 0 · Foundations", "once per repo; every skill after this depends on them")
+panel(80, 330, 1920, 650, "setup", "Step 0 · Foundations", "once per repo, before publishing issues or building")
 node(430, 510, 560, 150, "setup", cmd="/setup-matt-pocock-skills", cmd_size=30, label="where issues live, where the glossary goes", note="solo project: pick Local markdown")
 arrow([(715, 510), (785, 510)])
 node(1105, 510, 620, 150, "setup", cmd="/setup-feedback-loops", cmd_size=30, label="typecheck · lint · test · smoke\nlogs · browser · one command for all", note="watch every check go red once")
@@ -309,7 +316,7 @@ text(SX[2], 2895, "Quota gone, crashed, closed, or another tool. The new session
 
 # =================== BOTTOM: context rules + stuck ===================
 panel(80, 3200, 1010, 3660, "setup", "Context rules (these seven are enough)")
-rules = [("grill → spec → tickets", "", "one window, don't clear"),
+rules = [("story / grill → spec → tickets", "", "one window, don't clear"),
          ("between tickets", "/clear", ", fresh window"),
          ("agent drifted", "/refocus", ", before compact"),
          ("new dir / tool / fork", "/handoff", ""),
@@ -335,8 +342,42 @@ text(1090, 3405, "Can't write it → not a bug, misaligned requirements → /ref
 # =================== FOOTER ===================
 d.line([(80, 3720), (1920, 3720)], fill=(210, 200, 185), width=3)
 text(80, 3745, "First time? Type /vibe in an empty repo: a First run card walks 9 steps through the whole loop and checks each step with you.", F(27), fill=INK, maxw=1840)
-text(80, 3788, "Full handbook: skills/engineering/vibe/WORKFLOW.md   ·   25 curated skills, 14 you type, 11 the agent reaches for   ·   github.com/awangs1986/popcodeskills", F(24, False), fill=GRAY, maxw=1840)
+text(80, 3788, "Handbook: skills/engineering/vibe/WORKFLOW.md   ·   26 curated skills: 15 you type, 11 automatic   ·   github.com/awangs1986/popcodeskills", F(24, False), fill=GRAY, maxw=1840)
 text(80, 3828, "Mantra: align, then spec; red, then green; run it; read the Claims; review before merge; sweep weekly; drifting → refocus, dead → takeover.", F(26), fill=LANES["build"]["dark"], maxw=1840)
+
+# =================== PRODUCT STORY ON-RAMP ===================
+# Insert a band after the header, keeping the four-lane map's coordinates intact.
+# Header artwork ends above this cut; the setup title starts below it.
+FLOW_TOP, STORY_HEIGHT = 280, 520
+flow = img
+img = Image.new("RGB", (W, H + STORY_HEIGHT), BG)
+img.paste(flow.crop((0, 0, W, FLOW_TOP)), (0, 0))
+img.paste(flow.crop((0, FLOW_TOP, W, H)), (0, FLOW_TOP + STORY_HEIGHT))
+d = ImageDraw.Draw(img)
+
+panel(80, 330, 1920, 790, "story", "Before the build · Tell a Story", "First align the experience. Optional; no setup needed.")
+d.ellipse((100, 410, 405, 715), fill=LANES["story"]["fill"])
+paste_cat(cat_storyteller, 105, 425)
+text(252, 725, "The calico storyteller", F(23), fill=LANES["story"]["dark"], align="center")
+text(440, 418, "/tell-a-story", MONO(38), fill=LANES["story"]["dark"])
+text(820, 430, "Choose 1 or 2. Change the story together.", F(25, False), fill=GRAY)
+
+rbox(430, 495, 850, 655, LANES["story"]["fill"], LANES["story"]["edge"], r=22, width=3)
+d.ellipse((453, 516, 497, 560), fill=LANES["story"]["edge"])
+d.text((475, 538), "1", font=F(28), fill="white", anchor="mm")
+text(515, 514, "You tell", F(30), fill=LANES["story"]["dark"])
+text(455, 568, "A person, a goal,\nthe experience you want.", F(24, False), maxw=370, spacing=1.3)
+
+rbox(885, 495, 1305, 655, LANES["story"]["fill"], LANES["story"]["edge"], r=22, width=3)
+d.ellipse((908, 516, 952, 560), fill=LANES["story"]["edge"])
+d.text((930, 538), "2", font=F(28), fill="white", anchor="mm")
+text(970, 514, "Agent tells", F(30), fill=LANES["story"]["dark"])
+text(910, 568, "A story from the code.\nYou react and correct.", F(24, False), maxw=370, spacing=1.3)
+
+arrow([(1325, 575), (1410, 575)], color=LANES["story"]["edge"], width=5, head=18)
+node(1650, 575, 440, 170, "story", cmd="SPEC / BACKLOG", label="Both, or just the story", note="Only after you confirm", cmd_size=29)
+text(440, 678, "Tell → react → revise → confirm", F(28), fill=LANES["story"]["dark"])
+text(440, 730, "Code-backed facts and wishes stay separate. Drafts only; no code or published issues.", F(24, False), fill=GRAY, maxw=1440, spacing=1.25)
 
 img.save(str(HERE.parent / "vibe-workflow-poster.png"), optimize=True)
 print("saved")

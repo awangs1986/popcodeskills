@@ -26,5 +26,5 @@ A canonical state-machine label applied to an **Issue** during triage (e.g. `nee
 
 ## Flagged ambiguities
 
-- "backlog" was previously used to mean both the *tool* hosting issues and the *body of work* inside it. Resolved: the tool is the **Issue tracker**; "backlog" is no longer used as a domain term.
+- "backlog" was previously used to mean both the *tool* hosting issues and the *body of work* inside it. Resolved: the tool is the **Issue tracker**; "backlog" is no longer used as a domain term. `tell-a-story` uses **BACKLOG** only as a human-facing output label for proposed work, never for the tool or an already-published set of issues.
 - "backlog backend" / "backlog manager". Resolved: collapsed into **Issue tracker**.

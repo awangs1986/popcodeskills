@@ -4,6 +4,10 @@
 
 It refuses to call a loop wired until it has seen it go red. Every check gets a deliberate fault introduced, the red output shown, the fault reverted, and the green shown again. A present-but-silent check (a test script that finds zero tests, a typecheck with `strict` off) is treated as worse than a missing one, because the agent trusts it.
 
+<!-- cat-skills:conversation-doc:start -->
+Conversation follows the [shared style](../../.agents/conversation-style.md): warm, gentle, and natural, with `喵！` at prose paragraph boundaries. Commands and technical artifacts stay exact.
+<!-- cat-skills:conversation-doc:end -->
+
 ## When to reach for it
 
 You invoke this by typing `/setup-feedback-loops`; the agent won't reach for it on its own.

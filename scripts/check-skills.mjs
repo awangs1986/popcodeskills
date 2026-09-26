@@ -7,6 +7,8 @@
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { basename, dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
+import { conversationProblems, stripConversationMarker } from "./sync-conversation-style.mjs";
+import { routeCoverageProblems } from "./route-coverage.mjs";
 
 const repo = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (p) => readFileSync(join(repo, p), "utf8");
@@ -115,10 +117,11 @@ for (const full of walk(repo)) {
   if (rel !== "CHANGELOG.md" && text.includes("\u2014")) problem(`${rel}: contains an em-dash`);
   // The Chinese poster generator carries Chinese strings for its PNG output.
   const CJK_OK = new Set(["README.zh-CN.md", "docs/engineering/poster/build_poster_zh.py"]);
-  if (!CJK_OK.has(rel) && !/^README\.md$/.test(rel) && /[\u4e00-\u9fff]/.test(text)) problem(`${rel}: contains non-English (CJK) text`);
+  const prose = stripConversationMarker(text);
+  if (!CJK_OK.has(rel) && !/^README\.md$/.test(rel) && /[\u4e00-\u9fff]/.test(prose)) problem(`${rel}: contains non-English (CJK) text`);
   if (rel === "README.md") {
-    // The language switch line is the only CJK allowed in README.md.
-    const stripped = text.replace(/\u7b80\u4f53\u4e2d\u6587/g, ""); // the "Simplified Chinese" switch label
+    // Apart from the fixed conversation marker, only the language switch may contain CJK.
+    const stripped = prose.replace(/\u7b80\u4f53\u4e2d\u6587/g, ""); // the "Simplified Chinese" switch label
     if (/[\u4e00-\u9fff]/.test(stripped)) problem(`${rel}: contains CJK text beyond the language-switch label`);
   }
   if (/plain English/.test(text) && !/never "plain English"/.test(text)) problem(`${rel}: says "plain English" (say "plain words" or "in the user's language")`);
@@ -131,6 +134,9 @@ if (readmeZh) {
   for (const l of a) if (!b.has(l)) problem(`README.zh-CN.md: missing ${l}`);
   for (const l of b) if (!a.has(l)) problem(`README.zh-CN.md: has ${l} which README.md lacks`);
 }
+
+// 6. Standalone-safe conversation rules and complete dispatcher coverage.
+problems.push(...conversationProblems(repo), ...routeCoverageProblems(repo));
 
 if (problems.length) {
   for (const p of problems) console.error(`✗ ${p}`);

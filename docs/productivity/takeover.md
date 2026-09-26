@@ -8,6 +8,10 @@ It does this **without importing the old conversation**. It indexes the record f
 
 The distinction it draws with `handoff` is who does the work. A handoff is *prepared by the outgoing* session; a takeover is *reconstructed by the incoming* one. A handoff file, when it exists, is one more record for `takeover` to index and check against the project, not a summary to take on trust.
 
+<!-- cat-skills:conversation-doc:start -->
+Conversation follows the [shared style](../../.agents/conversation-style.md): warm, gentle, and natural, with `喵！` at prose paragraph boundaries. Commands and technical artifacts stay exact.
+<!-- cat-skills:conversation-doc:end -->
+
 ## When to reach for it
 
 You invoke this by typing `/takeover` (or "use takeover with ...") in the new session; the agent won't reach for it on its own. Give it the record and, optionally, a focus ("only the login feature") and an old-root to new-root mapping.

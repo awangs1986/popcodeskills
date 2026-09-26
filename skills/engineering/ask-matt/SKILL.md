@@ -8,15 +8,15 @@ disable-model-invocation: true
 
 You don't remember every skill, so ask.
 
-A **flow** is a path through the skills. Most paths run along one **main flow**, and two **on-ramps** merge onto it. Everything else is standalone, or a vocabulary layer that runs underneath.
+A **flow** is a path through the skills. Most paths run along one **main flow**, and situational **on-ramps** merge onto it. Everything else is standalone, or a vocabulary layer that runs underneath.
 
-**Working alone?** **`/vibe`** is a pre-decided subset of this map for one developer with no team process: four lanes (build, fix, review, tidy), a sizing question, and a route card naming the next command. It covers the main flow, the bug on-ramp, and codebase health, and deliberately leaves out `wayfinder`, `triage`, `to-questionnaire`, `research` and `wizard`. Send solo users there first; send them back here the moment other people enter the picture.
+**Working alone?** **`/vibe`** is a pre-decided subset of this map for one developer with no team process: four lanes (build, fix, review, tidy), a sizing question, and a route card naming the next command. It covers the main flow, the bug on-ramp, and codebase health, and deliberately leaves out `triage`, `to-questionnaire` and `wizard` (with `wayfinder` brought back for multi-session decisions). Send solo users there first; send them back here the moment other people enter the picture.
 
 ## The main flow: idea → ship
 
 The route most work travels. You have an idea and want it built.
 
-1. **`/grill-with-docs`** sharpens the idea by interview. Start here whenever you are **working in a working directory**: it's stateful, retaining what it learns in `CONTEXT.md` and ADRs. (No working directory? Use `/grill-me` instead, covered under Standalone. Both run the same `/grilling` primitive; `grill-with-docs` is the one that leaves a paper trail, which makes it the better of the two whenever a repo is there to leave it in.)
+1. **`/grill-with-docs`** sharpens a shared product idea by interview. For unresolved design questions when you are **working in a working directory**, start here: it's stateful, retaining what it learns in `CONTEXT.md` and ADRs. (No working directory? Use `/grill-me` instead, covered under Standalone. Both run the same `/grilling` primitive; `grill-with-docs` is the one that leaves a paper trail, which makes it the better of the two whenever a repo is there to leave it in.)
 2. **Branch: can you settle every question in conversation?** If a question needs a runnable answer (state, business logic, a UI you have to see), detour through a prototype, bridged by **`/handoff`** in both directions (a prototype lives in its own directory, which is exactly what `/handoff` is for; see Phase boundaries):
    - **`/handoff`** out, then open a fresh session against that file,
    - **`/prototype`** to answer the question with throwaway code,
@@ -36,6 +36,10 @@ The limit on this is the **[smart zone](https://www.aihero.dev/ai-coding-diction
 ## On-ramps
 
 A starting situation that generates work, then merges onto the main flow.
+
+- **You can imagine using the product but cannot write its requirements, or want to check what the current workspace feels like to use** → **`/tell-a-story`**. Choose **1** to tell the agent your intended experience, or **2** to hear a realistic, source-grounded user journey from the agent. Revise the scenes together until the latest story is explicitly confirmed, then optionally turn it into a local product SPEC, proposed BACKLOG, or both. No setup is needed; source-supported behavior, uncertainties, and desired changes stay separate.
+
+  This aligns **what experience to build**, not the stack or a multi-session decision map. Carry the agreed story and drafts into **`/grill-with-docs`** when design decisions remain, or **`/to-spec`** and **`/to-tickets`** when ready to prepare and publish execution work. Product drafts are not automatically ready-for-agent issues. For proof that an already-agreed experience actually works, use **`/cattytest`** instead.
 
 - **Bugs and requests piling up** → **`/triage`**. It moves issues through triage roles and produces agent-ready issues, which **`/implement`** later picks up.
 
@@ -76,7 +80,7 @@ Read [PHASE-BOUNDARIES.md](PHASE-BOUNDARIES.md) for the ordered tree: the five q
 
 Off the main flow entirely.
 
-- **`/grill-me`**: the same relentless interview as `/grill-with-docs`, but **stateless**: it saves nothing locally and builds no `CONTEXT.md`. Reach for it when you are **not working in a working directory** (sharpening a plan, a design, a piece of writing, anything with no repo under it). If you are in a working directory, use `/grill-with-docs` instead: it runs the same interview and leaves a paper trail, so it is strictly the better one.
+- **`/grill-me`**: the same patient, thorough interview as `/grill-with-docs`, but **stateless**: it saves nothing locally and builds no `CONTEXT.md`. Reach for it when you are **not working in a working directory** (sharpening a plan, a design, a piece of writing, anything with no repo under it). If you are in a working directory, use `/grill-with-docs` instead: it runs the same interview and leaves a paper trail, so it is strictly the better one.
 - **`/grilling`** is the interview primitive itself: rounds, the frontier, facts are the agent's job and decisions are yours. `/grill-me` and `/grill-with-docs` are the two named ways in, and `/triage`, `/wayfinder` and `/improve-codebase-architecture` all run it internally. Reach for it directly only when you want the interview with no wrapper around it.
 - **`/resolving-merge-conflicts`** works an in-progress merge or rebase conflict hunk by hunk, resolving by **intent** traced to each side's primary source rather than by picking lines, then finishes the operation. It never runs `--abort`. Standalone and off every flow: reach for it when you are already mid-conflict.
 - **`/prototype`** is a small, throwaway program that answers one design question: does this state model feel right, or what should this UI look like. Throwaway is a constraint on how the code is written, not a promise to destroy it: the answer folds into the real code, and the prototype itself is kept as a **primary source** on a `prototype/<name>` branch out of main, pointed at from the implementation issue. It's the detour in step 2 of the main flow, but reach for it any time a design question is hard to settle on paper.
@@ -93,6 +97,14 @@ Off the main flow entirely.
 
 ## Precondition
 
-**`/setup-matt-pocock-skills`**: run before your first engineering flow to configure the issue tracker, triage labels, and doc layout the other skills assume. Custom issue trackers also work.
+**`/setup-matt-pocock-skills`**: run before your first tracker-dependent engineering flow to configure the issue tracker, triage labels, and doc layout the other skills assume. Custom issue trackers also work.
 
 **`/setup-feedback-loops`**: run right after it, once per repo and again when the stack changes. It wires the typecheck, lint, test runner, formatter, smoke test, dev logs, browser and pre-commit guardrail that `/tdd`, `/implement`, `/verify` and `/diagnosing-bugs` all spend, proves each one goes red, and records the commands in `docs/agents/feedback-loops.md`. Without it every one of those skills is guessing at how to check its own work.
+
+<!-- cat-skills:conversation:start -->
+## Conversation style
+
+- Use the warm, attentive manner of a gentle female secretary: natural wording, patient questions, and a considerate next step. Avoid scolding, canned acknowledgments, flattery, intimate nicknames, or claims of being human. Be honest about risks and failures.
+- End each user-facing conversational paragraph exactly once with the literal `喵！`, including a single or final paragraph. Put it after the prose, not inside a command; keep the rest in the user's language. Apply this to questions, progress updates, and final explanations.
+- Keep code, commands, identifiers, source quotations, tables, schemas, and saved technical artifacts unchanged. An exact-format-only response stays exact; don't add filler just to carry the marker. Dialogue templates and guide copy use this voice without changing their choices, but copyable examples and machine-facing subagent results do not. Warmth never weakens evidence, scope, confirmation gates, or technical rigor.
+<!-- cat-skills:conversation:end -->

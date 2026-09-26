@@ -1,48 +1,68 @@
 ## What it does
 
-`askcat` builds **one HTML page** that explains every skill you have installed from this repo, the friendly way. A cartoon cat walks you through the kit chapter by chapter, in the order the skills are used rather than alphabetically: start here, build, fix, review, tidy, what to do when the [session](https://www.aihero.dev/ai-coding-dictionary/session) goes wrong, everything else. Each skill gets a card: what it does in one plain sentence, when to reach for it, what a run looks like, one realistic prompt to type, the cat's one tip (the thing people get wrong), and a one-line tell for a good run and a bad one.
+`askcat` builds **one offline HTML guide** to the skills available from this kit. A gentle cat guide explains each one in ordinary words, with a useful example, a tip, and signs of a good or bad run. Search, a "which skill do I need?" picker, and saved progress ticks make it a guide you can keep open while learning the workflow.
 
-Around the cards: a **"which skill do I need?"** picker (three or four questions, lands on one skill and a prompt), the **first-run** sequence with what to watch at each step, a glossary of the repo's words in plain language, search, and an *I've tried this* tick on every card that is saved in your browser, so the page doubles as a checklist.
+The page must match an inventory gathered from actual files, not a remembered list or count. Duplicate installations get one card. A checkout catalog is explicitly labelled as a catalog, not a claim that every command is installed. No skills are run just because the page recommends them.
 
-It is [teach](teach.md) narrowed to one topic, with the guide character and the layout fixed. The [agent](https://www.aihero.dev/ai-coding-dictionary/agent)'s whole job is the writing, and the writing has one rule: every sentence comes from a `SKILL.md` it opened in this session. Nothing is described from memory.
+<!-- cat-skills:conversation-doc:start -->
+Conversation follows the [shared style](../../.agents/conversation-style.md): warm, gentle, and natural, with `喵！` at prose paragraph boundaries. Commands and technical artifacts stay exact.
+<!-- cat-skills:conversation-doc:end -->
 
 ## When to reach for it
 
-You invoke this by typing `/askcat`; the agent won't reach for it on its own. The page is written in whatever language you are talking to it in; pass a language, an output path, or a skill name to start the tour on.
+You invoke this by typing `/askcat`; the agent won't reach for it on its own. Pass a language, an output path, or a skill name to open on. It works before project setup.
 
 | Situation | Reach for |
 | --- | --- |
-| First week with the kit, and the README is a wall | **`/askcat`** |
-| Showing the skills to someone you're onboarding | **`/askcat`**, in their language |
-| "Which one do I type right now?" | [vibe](../engineering/vibe.md): it routes, this page teaches |
-| One message from the agent didn't land | [wait-what](wait-what.md) |
-| Learning a topic that isn't this kit | [teach](teach.md) |
+| First week with the kit, and the README feels like too much | `/askcat` |
+| Showing the skills to someone you're onboarding | `/askcat`, in their language |
+| You installed a new skill and the old guide is missing it | Regenerate with `/askcat` |
+| You want just the next command, not the tour | [vibe](../engineering/vibe.md) |
+| A message from the agent did not land | [wait-what](./wait-what.md) |
+| You need to describe the product experience itself | [tell-a-story](../engineering/tell-a-story.md) |
+
+## Prerequisites
+
+The skill needs readable skill files and a place to save the HTML. It does not need an issue tracker or engineering setup. A bundled, dependency-free Node.js helper validates the inventory and builds the page when Node.js is available; otherwise the agent performs the same checks manually and says so. Existing output files are replaced only with your approval.
+
+## A current guide, not a frozen list
+
+Chapters follow the workflow: start here, picture the product when that route is available, build, fix, review, tidy, session care, and the rest. The calico storyteller explains `tell-a-story`, including the choice of narrator and the confirmation before a SPEC or BACKLOG draft. Other inline cats have distinct coats and props, without needing external image files. A tiny embedded font covers the fixed conversation marker even on a machine without Chinese fonts.
+
+The picker separates five easy-to-confuse requests: align the product experience, design acceptance cases, run those cases, audit the existing tests, and research an external fact. It never recommends an unavailable command. A partial installation produces a smaller guide rather than invented cards.
+
+The guide's paragraphs use the same warm conversational voice as the chat. The renderer adds `喵！` at paragraph boundaries; headings, buttons, file paths, and copyable example prompts remain undecorated. Progress ticks live in that browser, not in the project or on a server. If browser storage is blocked, they still work for the open page but do not survive a reload.
 
 ## Common questions
 
-**It generated a page. Is the content trustworthy?**
-As trustworthy as the files it read. The skill forbids describing a skill it didn't open, and a card for a skill whose file says nothing about what a good run looks like says exactly that instead of inventing one. If a card looks wrong, the fix is upstream: the skill's own `SKILL.md` or docs page.
+**Will a newly added skill be left out?**
 
-**Why chapters by workflow and not a list?**
-Because "what is `to-tickets`" is the wrong first question. The useful one is "I have an idea, what happens next", and the answer is a sequence. The page follows the same lanes as `vibe`'s handbook so the two agree.
+The inventory is rebuilt on each run. The page builder compares card names, invocation modes, and beta flags against that separate inventory, so an omitted or duplicated card fails validation. It still depends on the agent finding the right installation roots and reading the right versions; the visible source and scope let you check that.
+
+**Why does it say "repository catalog" instead of "installed skills"?**
+
+A checked-out `SKILL.md` is not proof that your current agent has installed it. The guide can explain the repository before installation, but it keeps that distinction visible. Conversely, a user-invoked skill missing from the model's implicit list is not automatically uninstalled.
 
 **Can it open on one skill?**
-Yes: `/askcat tdd` builds the whole page, hands back a link that opens on that card, and answers in chat with that card's one-liner and example.
 
-**Does it know what I've tried?**
-Only through the ticks, which live in your browser's local storage for that file. Regenerate the page after installing or updating skills; the ticks survive as long as the skill names do.
+Yes. `/askcat tell-a-story` builds the guide and links directly to that card when it is in the inventory. If it is not found, the agent explains that instead of making up a card or returning a broken anchor.
 
-**Is the cat necessary?**
-It is a guide, not decoration: every bubble carries a fact, and the skill deletes any that doesn't. The character exists because a tour with a voice gets read and a reference table gets skimmed.
+**Can source text accidentally turn into executable HTML?**
+
+The builder escapes script delimiters during JSON insertion, and the renderer escapes content and rejects unsafe link schemes. These are safeguards against accidental markup and untrusted text, not permission to skip reviewing the generated file.
+
+**Do I need to regenerate after updates?**
+
+Yes. The guide is a snapshot of the files read for that run. Rebuilding refreshes the cards and picker; progress ticks survive while the source identity, skill names, and browser storage remain the same.
 
 ## It's working if
 
-- Someone who has never used an agent can read a card and know what to type and what they will see.
-- Every card's example is something you would actually type, and every picker leaf lands on a skill that is on the page.
-- The page opens from disk with no network, and looks the same in every browser you have.
-- Nothing on it describes a skill you don't have, and nothing you have is missing.
-- After a week the ticks show which skills you've actually run, and the untried ones are the ones you meant to try.
+- You can recognize the right skill without learning software jargon first.
+- The visible count matches unique skills in the chosen installation or catalog, including newly added ones.
+- The story picker reaches the calico storyteller, and proof cases are not confused with test audits.
+- Examples remain clean to copy while the explanations sound warm rather than like a system log.
+- Search, picker, deep links, and progress ticks work offline, without loading outside assets.
 
 ## Where it fits
 
-The onboarding layer over the whole set. [vibe](../engineering/vibe.md) routes you to the next command; [ask-matt](../engineering/ask-matt.md) is the full map for someone who already knows the names; this page is for the week before either of those is fast. It reads the same `SKILL.md` files and, when present, `vibe/WORKFLOW.md`, so it never disagrees with them; regenerate it whenever the installed set changes. It is [teach](teach.md) pointed at the kit itself.
+A **standalone onboarding guide** over the available kit. [vibe](../engineering/vibe.md) gives the next command, [ask-matt](../engineering/ask-matt.md) maps the broader flows, and [tell-a-story](../engineering/tell-a-story.md) aligns the product itself. Regenerate this guide when the installed files change; it explains those skills without invoking them.
